@@ -1,0 +1,85 @@
+﻿<Window x:Class="ContactsBook.Views.ContactsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ContactsBook.Views"
+        mc:Ignorable="d"
+        Title="{Binding Path=ViewTitle}" Height="450" Width="800">
+    <Window.Resources>
+        <local:ContactPopupView x:Key="pop"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="150"/>
+        </Grid.ColumnDefinitions>
+        <!--Список контактов-->
+        <ListView Grid.Column="0" 
+                  ItemsSource ="{Binding Path=Contacts}"
+                  Margin="10">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding Path=Name}"  Width="100"/>
+                    <GridViewColumn Header="Фамилия" DisplayMemberBinding="{Binding Path=SurName}" Width="100"/>
+                    <GridViewColumn Header="Номера телефонов" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid HorizontalAlignment="Stretch" Background="Aqua">
+                                    <ComboBox ItemsSource="{Binding Path=PhoneNumbers}"
+                                              DisplayMemberPath="PhoneNumber"
+                                              SelectedIndex="0"
+                                              Foreground="Blue" Cursor="Hand"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="@mails" Width="200">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ComboBox ItemsSource="{Binding Path=MailsOfContact}"
+                                              DisplayMemberPath="MailOfContact"
+                                              SelectedIndex="0"
+                                              Foreground="Blue" Cursor="Hand" />
+                                </Grid>
+                                
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        
+        <!--Поиск-->
+        <TextBlock Grid.Column="1" 
+                   Text="Поиск контакта" 
+                   Margin="0 10"
+                   VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        <TextBox Grid.Column="1" 
+                 Width="100" 
+                 VerticalAlignment="Top" HorizontalAlignment="Center"
+                 Margin="0 30"
+                 ToolTip="Поиск контактов"/>
+        
+        <!--Панель управления-->
+        <StackPanel Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    Margin="10 40">
+            <Button Content="Добавить" 
+                    Command="{Binding Path=CreateContactCommand}"
+                    CommandParameter="{StaticResource pop}"
+                    Margin="0 6" Height="30"/>
+            <Button Content="Удалить" Margin="0 6" Height="30"/>
+            <Button Content="Редактировать" Margin="0 6" Height="30"/>
+
+        </StackPanel>
+    </Grid>
+</Window>
