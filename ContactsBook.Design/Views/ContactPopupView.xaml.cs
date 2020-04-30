@@ -11,13 +11,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ContactsBook.Design.Interfaces;
 
 namespace ContactsBook.Design.Views
 {
     /// <summary>
     /// Логика взаимодействия для ContactPopupView.xaml
     /// </summary>
-    public partial class ContactPopupView : Window
+    public partial class ContactPopupView : Window, IView
     {
         public ContactPopupView()
         {

@@ -4,8 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactsBook.Design.Views"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="ContactsView" Height="450" Width="800">
+        Title="ContactsView" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        x:Name="HauptFenster">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:CallMethodAction TargetObject="{Binding}" MethodName="OnClosingWindow"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -14,6 +21,8 @@
         <!--Список контактов-->
         <ListView Grid.Column="0" 
                   ItemsSource ="{Binding Path=Contacts}"
+                  SelectedItem="{Binding Path=Contact}"
+                  SelectionMode="Single"
                   Margin="10">
 
             <ListView.ItemContainerStyle>
@@ -74,7 +83,9 @@
                     Command="{Binding Path=CreateContactCommand}"
                     
                     Margin="0 6" Height="30"/>
-            <Button Content="Удалить" Margin="0 6" Height="30"/>
+            <Button Content="Удалить"
+                    Command="{Binding Path=DeleteContactCommand}"
+                    Margin="0 6" Height="30"/>
             <Button Content="Редактировать" Margin="0 6" Height="30"/>
 
         </StackPanel>

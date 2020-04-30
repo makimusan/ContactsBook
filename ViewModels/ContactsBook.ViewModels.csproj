@@ -42,12 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\IViewBase.cs" />
+    <Compile Include="Base\IViewModelBase.cs" />
     <Compile Include="Base\ViewModelBase.cs" />
     <Compile Include="Implementations\ContactPopupViewModel.cs" />
     <Compile Include="Implementations\ContactsViewModel.cs" />
     <Compile Include="Interfaces\IContactPopupViewModel.cs" />
     <Compile Include="Interfaces\IContactsViewModel.cs" />
+    <Compile Include="Manager\ViewManager.cs" />
     <Compile Include="Manager\ViewModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -55,6 +56,14 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContactsBook.Design\ContactsBook.Design.csproj">
+      <Project>{c93b5f62-c860-47b2-8cdc-03b54be76815}</Project>
+      <Name>ContactsBook.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ContactsBook.Locator\ContactsBook.Locator.csproj">
+      <Project>{811fcd67-ea1c-4f3a-8908-7251ae7b1221}</Project>
+      <Name>ContactsBook.Locator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Domain\ContactsBook.Domain.csproj">
       <Project>{2e925525-443a-4532-807b-ef0c8c0b2103}</Project>
       <Name>ContactsBook.Domain</Name>

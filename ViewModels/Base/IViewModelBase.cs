@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ViewModels.Base
 {
-    public interface IViewBase
+    public interface IViewModelBase
     {
         #region Свойства
         /// <summary>
@@ -17,10 +17,7 @@ namespace ViewModels.Base
 
         #region Методы
 
-        /// <summary>
-        /// Инициализирует модель-представление
-        /// </summary>
-        void InitializeViewModel();
+
 
         #endregion
     }

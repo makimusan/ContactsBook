@@ -1,7 +1,6 @@
 ﻿using ContactsBook.Domain.Models;
 using Infrastructure.Services;
 using Infrastructure.Commands;
-using Infrastructure.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using ViewModels.Base;
 using ViewModels.Interfaces;
+using ContactsBook.Locator.Services;
+using ViewModels.Manager;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace ViewModels.Implementations
 {
@@ -17,6 +20,7 @@ namespace ViewModels.Implementations
     {
         #region Поля
         private IServiceDTO _serviceDTO;
+        private IServiceLocator _serviceLocator;
         #endregion
 
         #region Конструктор
@@ -29,10 +33,10 @@ namespace ViewModels.Implementations
         #region Реализация IContactsViewModel
 
         #region Свойства
-        private IList<ContactModel> contacts;
-        public IList<ContactModel> Contacts 
+        private ObservableCollection<ContactModel> contacts;
+        public ObservableCollection<ContactModel> Contacts 
         {
-            get { return contacts ?? new List<ContactModel>(); }
+            get { return contacts ?? new ObservableCollection<ContactModel>(); }
             private set
             {
                 if(contacts != value)
@@ -43,6 +47,21 @@ namespace ViewModels.Implementations
             }
         }
 
+        private ContactModel contact;
+        public ContactModel Contact
+        {
+            get { return contact; }
+            set 
+            { 
+                if(contact != value)
+                {
+                    contact = value;
+                    OnPropertyChanged(nameof(Contact));
+                }
+            }
+        }
+
+
         public string ViewTitle => "Справочник контактов";
 
         #endregion
@@ -51,10 +70,32 @@ namespace ViewModels.Implementations
         public void InitializeViewModel()
         {
             _serviceDTO = GetService();
-            Contacts = _serviceDTO.GetContacts();
+            _serviceLocator = new ServiceLocator();
+
+            Contacts = new ObservableCollection<ContactModel>(_serviceDTO.GetContacts());
             WasModelChanged = false;
 
-            CreateContactCommand = new UICommand((x) => ShowCreateContactWindow(x));
+            CreateContactCommand = new UICommand(obj => ShowCreateContactWindow());
+            DeleteContactCommand = new UICommand(obj => DeleteContact(), cd => CanDelete());
+
+            SubscribeToEvent();
+        }
+
+        private bool CanDelete()
+        {
+            return contact != null ? true : false;
+        }
+
+        private void DeleteContact()
+        {
+            if (contact == null) return;
+
+            Contacts.Remove(Contact);
+        }
+
+        public void OnClosingWindow(object sender, CancelEventArgs e)
+        {
+            e.Cancel = false;
         }
 
         #endregion
@@ -76,15 +117,25 @@ namespace ViewModels.Implementations
             get; private set;
         }
 
+        public ICommand CloseWindowCommand
+        {
+            get; private set;
+        }
+
         #endregion
 
         #endregion
 
         #region Методы
 
-        private void ShowCreateContactWindow(object modalWindow)
+        private void ShowCreateContactWindow()
         {
-            DialogManager.ShowUserDialog(modalWindow);
+            _serviceLocator.ActivateContactWindow(ViewModelManager.GetContactViewModel());
+        }
+
+        private void SubscribeToEvent()
+        {
+
         }
 
         #endregion

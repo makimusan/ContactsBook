@@ -5,8 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactsBook.Design.Views"
         mc:Ignorable="d"
-        Title="ContactPopupView" Height="450" Width="800">
+        Title="ContactPopupView" Height="309" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition MaxHeight="50"/>
+        </Grid.RowDefinitions>
+
+        <!--Сеть для полей редактирования-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--Панель для ФИО, телефона, Email-->
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="8 20 4 0">
+                <TextBlock Text="Name"/>
+                <TextBox/>
+                <TextBlock Text="SurName"/>
+                <TextBox/>
+                <TextBlock Text="Number"/>
+                <TextBox/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Save" Width="20"/>
+                    <Button Content="Save" Width="20"/>
+                    <Button Content="Save" Width="20"/>
+                </StackPanel>
+                <TextBlock Text="EMail"/>
+                <TextBox/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Save" Width="20"/>
+                    <Button Content="Save" Width="20"/>
+                    <Button Content="Save" Width="20"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!--Панель для списка номеров телефонов-->
+            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="4 20 4 0">
+                <TextBlock Text="Numbers"/>
+                <ListView Height="160"/>
+            </StackPanel>
+
+            <!--Панель для списка Emails-->
+            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="4 20 8 0">
+                <TextBlock Text="EMails"/>
+                <ListView Height="160"/>
+            </StackPanel>
+        </Grid>
+
+        <!--Панель кнопок-->
+        <StackPanel Grid.Row="1" 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center">
+            <Button Content="Save" Width="100" Margin="0 0 20 0"/>
+            <Button Content="Exit" Width="100" Margin="0 0 20 0"/>
+        </StackPanel>
     </Grid>
 </Window>

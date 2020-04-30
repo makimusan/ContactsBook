@@ -11,7 +11,7 @@ namespace ViewModels.Interfaces
     /// <summary>
     /// Интерфейс для модели-представления всплывающего окна "Контакт"
     /// </summary>
-    public interface IContactPopupViewModel : IViewBase
+    public interface IContactPopupViewModel : IViewModelBase
     {
         #region Свойства
 
