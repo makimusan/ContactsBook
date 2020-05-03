@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace Infrastructure.Services
 {
-    public interface IDialogService
+    public interface ICloneService<T>
     {
-        #region Методы
+        T CloneObject(T clonableObject);
 
-        Window GetCreateContactDialog();
-
-        #endregion
+        IList<T> CloneCollection(IList<T> clonableCollection);
     }
 }

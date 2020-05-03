@@ -62,7 +62,7 @@ namespace ContactsBook.Domain.Models
 
         private IList<MailModel> mailsOfContact;
         /// <summary>
-        /// Список телефонных номеров контакта
+        /// Список электронных адресов контакта
         /// </summary>
         public IList<MailModel> MailsOfContact
         {

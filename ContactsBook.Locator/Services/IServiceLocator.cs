@@ -12,6 +12,6 @@ namespace ContactsBook.Locator.Services
     {
         void ActivateMainWindow<T>(T dataContext);
 
-        void ActivateContactWindow<T>(T dataContext);
+        bool? ActivateContactWindowDialog<T>(T dataContext);
     }
 }

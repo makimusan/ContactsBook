@@ -10,15 +10,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ContactsBook.Design.Interfaces;
 
-namespace ContactsBook.Design.Views
+namespace ContactsBook.Design.UserControls
 {
     /// <summary>
     /// Логика взаимодействия для ContactPopupView.xaml
     /// </summary>
-    public partial class ContactPopupView : Window, IView
+    public partial class ContactPopupView : UserControl
     {
         public ContactPopupView()
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModels.Base;
 using ContactsBook.Domain.Models;
+using System.ComponentModel;
 
 namespace ViewModels.Interfaces
 {
@@ -19,6 +20,15 @@ namespace ViewModels.Interfaces
         /// Новый или редактируемый контакт
         /// </summary>
         ContactModel Contact { get; }
+
+        #endregion
+
+
+        #region Методы
+
+        void InitializeViewModel(ContactModel contactModel = null);
+
+        void OnClosingWindow(object sender, CancelEventArgs e);
 
         #endregion
     }

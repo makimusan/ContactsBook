@@ -1,0 +1,67 @@
+﻿<UserControl x:Class="ContactsBook.Design.UserControls.ContactPopupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ContactsBook.Design.UserControls"
+             mc:Ignorable="d" 
+             Height="209" Width="500">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!--Сеть для полей редактирования-->
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--Панель для ФИО, телефона, Email-->
+            <StackPanel Grid.Column="0" Orientation="Vertical" Margin="8 20 4 0">
+                <TextBlock Text="Name"/>
+                <TextBox Text="{Binding Path=Contact.Name}"/>
+                <TextBlock Text="SurName"/>
+                <TextBox Text="{Binding Path=Contact.SurName}"/>
+                <TextBlock Text="Number"/>
+                <TextBox Text="{Binding Path=EditablePhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="+" Width="20" ToolTip="Добавить"
+                            Command="{Binding Path=AddNumberCommand}"/>
+                    <Button Content="/" Width="20" ToolTip="Изменить"
+                            Command="{Binding Path=EditNumberCommand}"/>
+                    <Button Content="-" Width="20" ToolTip="Удалить"
+                            Command="{Binding Path=DeleteNumberCommand}"/>
+                </StackPanel>
+                <TextBlock Text="EMail"/>
+                <TextBox Text="{Binding Path=EditableEMail}"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="+" Width="20" ToolTip="Добавить"/>
+                    <Button Content="/" Width="20" ToolTip="Изменить"/>
+                    <Button Content="-" Width="20" ToolTip="Удалить"
+                            Command="{Binding Path=DeleteEMailCommand}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!--Панель для списка номеров телефонов-->
+            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="4 20 4 0">
+                <TextBlock Text="Numbers"/>
+                <ListView Height="160" 
+                          ItemsSource="{Binding Path=PhoneNumbers}"
+                          SelectedItem="{Binding Path=PhoneNumber}"
+                          DisplayMemberPath="PhoneNumber"/>
+            </StackPanel>
+
+            <!--Панель для списка Emails-->
+            <StackPanel Grid.Column="2" Orientation="Vertical" Margin="4 20 8 0">
+                <TextBlock Text="EMails"/>
+                <ListView Height="160"
+                          ItemsSource="{Binding Path=EMails}"
+                          SelectedItem="{Binding Path=EMail}"
+                          DisplayMemberPath="MailOfContact"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

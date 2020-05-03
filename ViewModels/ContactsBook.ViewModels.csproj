@@ -57,7 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ContactsBook.Design\ContactsBook.Design.csproj">
-      <Project>{c93b5f62-c860-47b2-8cdc-03b54be76815}</Project>
+      <Project>{C93B5F62-C860-47B2-8CDC-03B54BE76815}</Project>
       <Name>ContactsBook.Design</Name>
     </ProjectReference>
     <ProjectReference Include="..\ContactsBook.Locator\ContactsBook.Locator.csproj">

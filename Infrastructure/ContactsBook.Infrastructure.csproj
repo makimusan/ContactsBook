@@ -51,9 +51,12 @@
     <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\MenagerServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\AbstactCloneService.cs" />
+    <Compile Include="Services\ContactCloneService.cs" />
+    <Compile Include="Services\EMailCloneService.cs" />
+    <Compile Include="Services\ICloneService.cs" />
     <Compile Include="Services\IServiceDTO.cs" />
+    <Compile Include="Services\PhoneNumberCloneService.cs" />
     <Compile Include="Services\SQLiteServiceDTO.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ContactsBook.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +16,11 @@ namespace ViewModels.Manager
             return new ContactsViewModel();
         }
 
-        public static IContactPopupViewModel GetContactViewModel()
+        public static IContactPopupViewModel GetContactViewModel(ContactModel contactModel = null)
         {
-            return new ContactPopupViewModel();
+            IContactPopupViewModel contactPopupViewModel = new ContactPopupViewModel();
+            contactPopupViewModel.InitializeViewModel(contactModel);
+            return contactPopupViewModel;
         }
     }
 }

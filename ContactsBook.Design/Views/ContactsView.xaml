@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ContactsBook.Design.Views"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
-        Title="ContactsView" Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        Title="{Binding Path=ViewTitle}" 
+        Height="450" Width="800" WindowStartupLocation="CenterScreen"
         x:Name="HauptFenster">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -81,13 +82,13 @@
                     Margin="10 40">
             <Button Content="Добавить" 
                     Command="{Binding Path=CreateContactCommand}"
-                    
+                    Margin="0 6" Height="30"/>
+            <Button Content="Редактировать" 
+                    Command="{Binding Path=EditContactCommand}"
                     Margin="0 6" Height="30"/>
             <Button Content="Удалить"
                     Command="{Binding Path=DeleteContactCommand}"
                     Margin="0 6" Height="30"/>
-            <Button Content="Редактировать" Margin="0 6" Height="30"/>
-
         </StackPanel>
     </Grid>
 </Window>

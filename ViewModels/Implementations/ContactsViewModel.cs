@@ -76,12 +76,13 @@ namespace ViewModels.Implementations
             WasModelChanged = false;
 
             CreateContactCommand = new UICommand(obj => ShowCreateContactWindow());
-            DeleteContactCommand = new UICommand(obj => DeleteContact(), cd => CanDelete());
+            EditContactCommand = new UICommand(obj => ShowEditContactWindow(), ced => HasSelectedContact());
+            DeleteContactCommand = new UICommand(obj => DeleteContact(), cd => HasSelectedContact());
 
             SubscribeToEvent();
         }
 
-        private bool CanDelete()
+        private bool HasSelectedContact()
         {
             return contact != null ? true : false;
         }
@@ -130,8 +131,19 @@ namespace ViewModels.Implementations
 
         private void ShowCreateContactWindow()
         {
-            _serviceLocator.ActivateContactWindow(ViewModelManager.GetContactViewModel());
+           _serviceLocator.ActivateContactWindowDialog(ViewModelManager.GetContactViewModel());
         }
+
+        private void ShowEditContactWindow()
+        {
+            var vm = ViewModelManager.GetContactViewModel(Contact);
+            if (_serviceLocator.ActivateContactWindowDialog(vm) == true)
+            {
+                bool ewr = false;
+            }
+
+        }
+
 
         private void SubscribeToEvent()
         {
