@@ -30,6 +30,8 @@ namespace ViewModels.Interfaces
 
         void OnClosingWindow(object sender, CancelEventArgs e);
 
+        ContactModel GetChangedContact();
+
         #endregion
     }
 }

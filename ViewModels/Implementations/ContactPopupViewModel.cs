@@ -169,6 +169,9 @@ namespace ViewModels.Implementations
 
         public void OnClosingWindow(object sender, CancelEventArgs e)
         {
+            _contactModelBackUp = null;
+            PhoneNumbers = null;
+            EMails = null;
             e.Cancel = false;
         }
 
@@ -188,6 +191,16 @@ namespace ViewModels.Implementations
             EMails = new ObservableCollection<MailModel>(contact.MailsOfContact);
 
             return contact;
+        }
+
+        public ContactModel GetChangedContact()
+        {
+            _contactModelBackUp.Name = Contact.Name;
+            _contactModelBackUp.SurName = Contact.SurName;
+            _contactModelBackUp.PhoneNumbers = new List<PhoneNumberModel>(PhoneNumbers.ToList());
+            _contactModelBackUp.MailsOfContact = new List<MailModel>(EMails.ToList());
+
+            return _contactModelBackUp;
         }
 
         private void AddNumber()

@@ -139,7 +139,7 @@ namespace ViewModels.Implementations
             var vm = ViewModelManager.GetContactViewModel(Contact);
             if (_serviceLocator.ActivateContactWindowDialog(vm) == true)
             {
-                bool ewr = false;
+                Contact = vm.GetChangedContact();
             }
 
         }
