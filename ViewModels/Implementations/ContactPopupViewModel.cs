@@ -11,10 +11,12 @@ using System.Windows.Input;
 using Infrastructure.Commands;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using ContactsBook.Domain.DataStructs;
+using ViewModels.Manager;
 
 namespace ViewModels.Implementations
 {
-    class ContactPopupViewModel : ViewModelBase, IContactPopupViewModel
+    class ContactPopupViewModel : ViewModelBase, IContactPopupViewModel, IDataErrorInfo
     {
         #region Поля
         private IServiceDTO _serviceDTO;
@@ -82,7 +84,7 @@ namespace ViewModels.Implementations
                 if (value != eMail)
                 {
                     eMail = value;
-                    EditableEMail = value.MailOfContact;
+                    EditableEMail = value?.MailOfContact;
                     OnPropertyChanged(nameof(EMail));
                 }
             }
@@ -117,7 +119,7 @@ namespace ViewModels.Implementations
         /// </summary>
         public ObservableCollection<PhoneNumberModel> PhoneNumbers
         {
-            get { return phoneNumbers ?? new ObservableCollection<PhoneNumberModel>(); }
+            get { return phoneNumbers ?? (phoneNumbers = new ObservableCollection<PhoneNumberModel>()); }
             set 
             { 
                 if(value != phoneNumbers)
@@ -135,7 +137,7 @@ namespace ViewModels.Implementations
         /// </summary>
         public ObservableCollection<MailModel> EMails
         {
-            get { return eMails ?? new ObservableCollection<MailModel>(); }
+            get { return eMails ?? (eMails = new ObservableCollection<MailModel>()); }
             set
             {
                 if (value != eMails)
@@ -161,6 +163,8 @@ namespace ViewModels.Implementations
             AddNumberCommand = new UICommand(obj => AddNumber(), cex => CanAddNumber());
             EditNumberCommand = new UICommand(obj => EditNumber(), cex => CanEditNumber());
             DeleteNumberCommand = new UICommand(obj => { PhoneNumbers.Remove(PhoneNumber); }, cex => PhoneNumber != null);
+            AddEMailCommand = new UICommand(obj => AddEMail(), cex => CanAddEMail());
+            EditEMailCommand = new UICommand(obj => EditEMail(), cex => CanEditEMail());
             DeleteEMailCommand = new UICommand(obj => { EMails.Remove(EMail); }, cex => EMail != null);
 
 
@@ -199,8 +203,19 @@ namespace ViewModels.Implementations
             _contactModelBackUp.SurName = Contact.SurName;
             _contactModelBackUp.PhoneNumbers = new List<PhoneNumberModel>(PhoneNumbers.ToList());
             _contactModelBackUp.MailsOfContact = new List<MailModel>(EMails.ToList());
+            _contactModelBackUp.WasModelChanged = true;
 
             return _contactModelBackUp;
+        }
+
+        public ContactModel GetNewContact()
+        {
+            Contact.PhoneNumbers = new List<PhoneNumberModel>(PhoneNumbers.ToList());
+            Contact.MailsOfContact = new List<MailModel>(EMails.ToList());
+            var newContact = _cloneService.CloneObject(Contact);
+            newContact.WasModelChanged = true;
+
+            return _cloneService.CloneObject(Contact);
         }
 
         private void AddNumber()
@@ -210,11 +225,11 @@ namespace ViewModels.Implementations
 
         private bool CanAddNumber()
         {
-            if (string.IsNullOrWhiteSpace(editablePhoneNumber)) return false;
+            if (string.IsNullOrWhiteSpace(EditablePhoneNumber)) return false;
 
             if (PhoneNumbers.Count == 0) return true;
 
-            if (PhoneNumbers.FirstOrDefault(phnm => phnm.PhoneNumber.Equals(editablePhoneNumber)) == null) return true;
+            if (PhoneNumbers.FirstOrDefault(phnm => phnm.PhoneNumber.Equals(EditablePhoneNumber)) == null) return true;
 
             return false;
         }
@@ -228,11 +243,62 @@ namespace ViewModels.Implementations
         {
             if (string.IsNullOrWhiteSpace(editablePhoneNumber)) return false;
 
-            if (PhoneNumber != null) return true;
+            if (PhoneNumber == null) return false;
 
             if (PhoneNumbers.FirstOrDefault(phnm => phnm.PhoneNumber.Equals(editablePhoneNumber)) == null) return true;
 
             return false;
+        }
+
+        private void AddEMail()
+        {
+            EMails.Add(new MailModel() { ID = 0, MailOfContact = EditableEMail });
+        }
+
+        private bool CanAddEMail()
+        {
+            if (string.IsNullOrWhiteSpace(EditableEMail)) return false;
+
+            if (EMails.Count == 0) return true;
+
+            if (EMails.FirstOrDefault(m => m.MailOfContact.Equals(EditableEMail)) == null) return true;
+
+            return false;
+        }
+
+        private void EditEMail()
+        {
+            EMail.MailOfContact = EditableEMail;
+        }
+
+        private bool CanEditEMail()
+        {
+            if (string.IsNullOrWhiteSpace(EditableEMail)) return false;
+
+            if (EMail == null) return false;
+
+            if (EMails.FirstOrDefault(m => m.MailOfContact.Equals(EditableEMail)) == null) return true;
+
+            return false;
+        }
+
+        private void OnOptionalServicesListChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                    item.PropertyChanged -= Model_PropertyChanged;
+            }
+            if (e.NewItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                    item.PropertyChanged += Model_PropertyChanged;
+            }
+        }
+
+        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnDataChanged(e.PropertyName);
         }
 
         #endregion
@@ -278,7 +344,26 @@ namespace ViewModels.Implementations
         {
             get; private set;
         }
+        #endregion
 
+        #region
+
+        public string Error => null;
+
+        public string this[string propertyName]
+        {
+            get
+            {
+                string result = null;
+
+                if (propertyName == nameof(Contact.Name))
+                {
+                    var wee = ValidationManager.IsInvalidLoginName(Contact.Name);
+                }
+
+                return result;
+            }
+        }
 
         #endregion
     }

@@ -23,7 +23,6 @@ namespace ViewModels.Interfaces
 
         #endregion
 
-
         #region Методы
 
         void InitializeViewModel(ContactModel contactModel = null);
@@ -31,6 +30,8 @@ namespace ViewModels.Interfaces
         void OnClosingWindow(object sender, CancelEventArgs e);
 
         ContactModel GetChangedContact();
+
+        ContactModel GetNewContact();
 
         #endregion
     }

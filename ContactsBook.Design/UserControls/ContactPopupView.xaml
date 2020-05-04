@@ -22,11 +22,13 @@
             <!--Панель для ФИО, телефона, Email-->
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="8 20 4 0">
                 <TextBlock Text="Name"/>
-                <TextBox Text="{Binding Path=Contact.Name}"/>
+                <TextBox Text="{Binding Path=Contact.Name, UpdateSourceTrigger=PropertyChanged, 
+                                        ValidatesOnDataErrors=True}"/>
                 <TextBlock Text="SurName"/>
                 <TextBox Text="{Binding Path=Contact.SurName}"/>
                 <TextBlock Text="Number"/>
-                <TextBox Text="{Binding Path=EditablePhoneNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Text="{Binding Path=EditablePhoneNumber, UpdateSourceTrigger=PropertyChanged, 
+                                        ValidatesOnDataErrors=True}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="+" Width="20" ToolTip="Добавить"
                             Command="{Binding Path=AddNumberCommand}"/>
@@ -36,10 +38,12 @@
                             Command="{Binding Path=DeleteNumberCommand}"/>
                 </StackPanel>
                 <TextBlock Text="EMail"/>
-                <TextBox Text="{Binding Path=EditableEMail}"/>
+                <TextBox Text="{Binding Path=EditableEMail, UpdateSourceTrigger=PropertyChanged}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="+" Width="20" ToolTip="Добавить"/>
-                    <Button Content="/" Width="20" ToolTip="Изменить"/>
+                    <Button Content="+" Width="20" ToolTip="Добавить"
+                            Command="{Binding Path=AddEMailCommand}"/>
+                    <Button Content="/" Width="20" ToolTip="Изменить"
+                            Command="{Binding Path=EditEMailCommand}"/>
                     <Button Content="-" Width="20" ToolTip="Удалить"
                             Command="{Binding Path=DeleteEMailCommand}"/>
                 </StackPanel>

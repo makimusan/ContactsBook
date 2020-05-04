@@ -49,13 +49,13 @@ namespace ContactsBook.Domain.Models
         /// <summary>
         /// Метод на событие <see cref="PropertyChanged"/>
         /// </summary>
-        /// <param name="_propName"></param>
-        public void OnPropertyChanged([CallerMemberName] string _propName = null)
+        /// <param name="propName"></param>
+        public void OnPropertyChanged([CallerMemberName] string propName = null)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(_propName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
 
-        protected void OnDataChanged(string propertyName)
+        protected void OnDataChanged([CallerMemberName] string propertyName = null)
         {
             WasModelChanged = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -48,7 +48,7 @@
     <Compile Include="Implementations\ContactsViewModel.cs" />
     <Compile Include="Interfaces\IContactPopupViewModel.cs" />
     <Compile Include="Interfaces\IContactsViewModel.cs" />
-    <Compile Include="Manager\ViewManager.cs" />
+    <Compile Include="Manager\ValidationManager.cs" />
     <Compile Include="Manager\ViewModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -73,5 +73,6 @@
       <Name>ContactsBook.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

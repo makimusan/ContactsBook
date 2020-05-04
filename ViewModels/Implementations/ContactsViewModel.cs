@@ -131,7 +131,14 @@ namespace ViewModels.Implementations
 
         private void ShowCreateContactWindow()
         {
-           _serviceLocator.ActivateContactWindowDialog(ViewModelManager.GetContactViewModel());
+            var vm = ViewModelManager.GetContactViewModel();
+            if (_serviceLocator.ActivateContactWindowDialog(vm) == true)
+            {
+                var newContact = vm.GetNewContact();
+                if (!CheckEMails(newContact.MailsOfContact.ToList()) || !CheckPhoneNumbers(newContact.PhoneNumbers.ToList())) return;
+
+                Contacts.Add(newContact);
+            }
         }
 
         private void ShowEditContactWindow()
@@ -144,14 +151,36 @@ namespace ViewModels.Implementations
 
         }
 
+        private bool CheckEMails(List<MailModel> mailModels)
+        {
+            var mailAddresses = mailModels.Select(m => m.MailOfContact);
+
+            foreach (var item in Contacts)
+            {
+                var res = item.MailsOfContact.FirstOrDefault(m => mailAddresses.Contains(m.MailOfContact));
+                if (res != null) return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckPhoneNumbers(List<PhoneNumberModel> phoneNumbers)
+        {
+            var onlyPhoneNumbers = phoneNumbers.Select(p => p.PhoneNumber);
+
+            foreach (var item in Contacts)
+            {
+                var res = item.PhoneNumbers.FirstOrDefault(phn => onlyPhoneNumbers.Contains(phn.PhoneNumber));
+                if (res != null) return false;
+            }
+
+            return true;
+        }
 
         private void SubscribeToEvent()
         {
-
+            
         }
-
         #endregion
-
-
     }
 }
