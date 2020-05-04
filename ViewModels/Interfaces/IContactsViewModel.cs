@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using ViewModels.Base;
 using ContactsBook.Domain.Models;
 using System.Windows.Input;
-using ContactsBook.Design.Interfaces;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 

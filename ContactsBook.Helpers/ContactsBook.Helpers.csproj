@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7AF887D1-5EE2-4F6C-AC16-0BD7AD838F2C}</ProjectGuid>
+    <ProjectGuid>{BFDCC687-6173-4AF2-936B-06DA793B6486}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ViewModels</RootNamespace>
-    <AssemblyName>ViewModels</AssemblyName>
+    <RootNamespace>ContactsBook.Helpers</RootNamespace>
+    <AssemblyName>ContactsBook.Helpers</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,35 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\IViewModelBase.cs" />
-    <Compile Include="Base\ViewModelBase.cs" />
-    <Compile Include="Implementations\ContactPopupViewModel.cs" />
-    <Compile Include="Implementations\ContactsViewModel.cs" />
-    <Compile Include="Interfaces\IContactPopupViewModel.cs" />
-    <Compile Include="Interfaces\IContactsViewModel.cs" />
-    <Compile Include="Manager\ViewModelManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ContactsBook.Helpers\ContactsBook.Helpers.csproj">
-      <Project>{bfdcc687-6173-4af2-936b-06da793b6486}</Project>
-      <Name>ContactsBook.Helpers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ContactsBook.Locator\ContactsBook.Locator.csproj">
-      <Project>{811fcd67-ea1c-4f3a-8908-7251ae7b1221}</Project>
-      <Name>ContactsBook.Locator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Domain\ContactsBook.Domain.csproj">
-      <Project>{2e925525-443a-4532-807b-ef0c8c0b2103}</Project>
-      <Name>ContactsBook.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\ContactsBook.Infrastructure.csproj">
-      <Project>{f61a1573-5ae4-4e99-ae92-86feac29ea9f}</Project>
-      <Name>ContactsBook.Infrastructure</Name>
-    </ProjectReference>
+    <Compile Include="Validation\ValidationManager.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

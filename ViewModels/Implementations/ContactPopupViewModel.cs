@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using ContactsBook.Domain.DataStructs;
 using ViewModels.Manager;
+using ContactsBook.Helpers.Validation;
 
 namespace ViewModels.Implementations
 {
@@ -169,6 +170,7 @@ namespace ViewModels.Implementations
 
 
             Contact = contactModel != null ? CloneContact(contactModel) : new ContactModel();
+            Contact.PropertyChanged += Model_PropertyChanged;
         }
 
         public void OnClosingWindow(object sender, CancelEventArgs e)
@@ -356,9 +358,9 @@ namespace ViewModels.Implementations
             {
                 string result = null;
 
-                if (propertyName == nameof(Contact.Name))
+                if (propertyName == nameof(EditablePhoneNumber))
                 {
-                    var wee = ValidationManager.IsInvalidLoginName(Contact.Name);
+                    if (!ValidationManager.ContainsOnlyNumbers(EditablePhoneNumber)) return "Номер должен содержать только цифры";
                 }
 
                 return result;

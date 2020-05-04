@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using ContactsBook.Helpers.Validation;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ContactsBook.Domain.Models
 {
     /// <summary>
     /// Сущность контакта
     /// </summary>
-    public class ContactModel : ModelBase
+    public class ContactModel : ModelBase, IDataErrorInfo
     {
         #region Свойства
 
@@ -74,6 +76,28 @@ namespace ContactsBook.Domain.Models
                     mailsOfContact = value;
                     OnPropertyChanged(nameof(MailsOfContact));
                 }
+            }
+        }
+
+        #endregion
+
+        #region Валидация IDataErrorInfo
+
+        public string Error => null;
+
+        public string this[string columnName] 
+        {
+            get
+            {
+                string result = null;
+
+                switch (columnName)
+                {
+                    case "Name": if(!ValidationManager.ContainsOnlyLetters(Name)) result = "Имя должно содержать только буквы"; break;
+                    case "SurName": if(!ValidationManager.ContainsOnlyLetters(SurName)) result = "Фамилия должна содержать только буквы"; break;
+                }
+
+                return result;
             }
         }
 

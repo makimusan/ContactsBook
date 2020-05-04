@@ -6,6 +6,17 @@
              xmlns:local="clr-namespace:ContactsBook.Design.UserControls"
              mc:Ignorable="d" 
              Height="209" Width="500">
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" 
+                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, 
+                                            Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -25,7 +36,8 @@
                 <TextBox Text="{Binding Path=Contact.Name, UpdateSourceTrigger=PropertyChanged, 
                                         ValidatesOnDataErrors=True}"/>
                 <TextBlock Text="SurName"/>
-                <TextBox Text="{Binding Path=Contact.SurName}"/>
+                <TextBox Text="{Binding Path=Contact.SurName, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}"/>
                 <TextBlock Text="Number"/>
                 <TextBox Text="{Binding Path=EditablePhoneNumber, UpdateSourceTrigger=PropertyChanged, 
                                         ValidatesOnDataErrors=True}"/>
