@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ContactsBook.Design.UserControls"
              mc:Ignorable="d" 
              Height="209" Width="500">
-    <UserControl.Resources>
+    <!--<UserControl.Resources>
         <Style TargetType="TextBox">
             <Style.Triggers>
                 <Trigger Property="Validation.HasError" Value="True">
@@ -16,7 +16,7 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-    </UserControl.Resources>
+    </UserControl.Resources>-->
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -32,15 +32,17 @@
 
             <!--Панель для ФИО, телефона, Email-->
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="8 20 4 0">
-                <TextBlock Text="Name"/>
+                <TextBlock Text="Имя"/>
                 <TextBox Text="{Binding Path=Contact.Name, UpdateSourceTrigger=PropertyChanged, 
                                         ValidatesOnDataErrors=True}"/>
-                <TextBlock Text="SurName"/>
+                <TextBlock Text="Фамилия"/>
                 <TextBox Text="{Binding Path=Contact.SurName, UpdateSourceTrigger=PropertyChanged,
-                                        ValidatesOnDataErrors=True}"/>
-                <TextBlock Text="Number"/>
+                                        ValidatesOnDataErrors=True}"
+                         ToolTip="{Binding Path=Contact.ErrorCollection[SurName]}"/>
+                <TextBlock Text="Номер телефона"/>
                 <TextBox Text="{Binding Path=EditablePhoneNumber, UpdateSourceTrigger=PropertyChanged, 
-                                        ValidatesOnDataErrors=True}"/>
+                                        ValidatesOnDataErrors=True}"
+                         ToolTip="{Binding Path=ErrorCollection[EditablePhoneNumber]}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="+" Width="20" ToolTip="Добавить"
                             Command="{Binding Path=AddNumberCommand}"/>
@@ -49,7 +51,7 @@
                     <Button Content="-" Width="20" ToolTip="Удалить"
                             Command="{Binding Path=DeleteNumberCommand}"/>
                 </StackPanel>
-                <TextBlock Text="EMail"/>
+                <TextBlock Text="Почта @"/>
                 <TextBox Text="{Binding Path=EditableEMail, UpdateSourceTrigger=PropertyChanged}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="+" Width="20" ToolTip="Добавить"
@@ -63,7 +65,7 @@
 
             <!--Панель для списка номеров телефонов-->
             <StackPanel Grid.Column="1" Orientation="Vertical" Margin="4 20 4 0">
-                <TextBlock Text="Numbers"/>
+                <TextBlock Text="Список номеров"/>
                 <ListView Height="160" 
                           ItemsSource="{Binding Path=PhoneNumbers}"
                           SelectedItem="{Binding Path=PhoneNumber}"
@@ -72,7 +74,7 @@
 
             <!--Панель для списка Emails-->
             <StackPanel Grid.Column="2" Orientation="Vertical" Margin="4 20 8 0">
-                <TextBlock Text="EMails"/>
+                <TextBlock Text="Список @"/>
                 <ListView Height="160"
                           ItemsSource="{Binding Path=EMails}"
                           SelectedItem="{Binding Path=EMail}"

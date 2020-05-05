@@ -110,7 +110,22 @@ namespace ViewModels.Implementations
 
         public string ViewTitle => "Редактирование контакта";
 
-        public bool? ModalDialogResult { get; set; }
+        private Dictionary<string, string> errorCollection;
+        /// <summary>
+        /// Коллекция со списком ошибок
+        /// </summary>
+        public Dictionary<string, string> ErrorCollection
+        {
+            get { return errorCollection ?? (errorCollection = new Dictionary<string, string>()); }
+            private set
+            {
+                if (value != errorCollection)
+                {
+                    OnPropertyChanged(nameof(ErrorCollection));
+                    errorCollection = value;
+                }
+            }
+        }
 
         #region Обертки над свойствами
 
@@ -160,14 +175,16 @@ namespace ViewModels.Implementations
             _serviceDTO = GetService();
             _cloneService = new ContactCloneService();
 
+            SaveCommand = new UICommand(obj => Save(), cex => CanSave());
             CloseWindowCommand = new UICommand(obj => CloseWindow());
-            AddNumberCommand = new UICommand(obj => AddNumber(), cex => CanAddNumber());
+            AddNumberCommand = new UICommand(obj => AddNumber(), cex => !HasErrors/*CanAddNumber()*/);
             EditNumberCommand = new UICommand(obj => EditNumber(), cex => CanEditNumber());
             DeleteNumberCommand = new UICommand(obj => { PhoneNumbers.Remove(PhoneNumber); }, cex => PhoneNumber != null);
             AddEMailCommand = new UICommand(obj => AddEMail(), cex => CanAddEMail());
             EditEMailCommand = new UICommand(obj => EditEMail(), cex => CanEditEMail());
             DeleteEMailCommand = new UICommand(obj => { EMails.Remove(EMail); }, cex => EMail != null);
 
+            ErrorCollection = new Dictionary<string, string>();
 
             Contact = contactModel != null ? CloneContact(contactModel) : new ContactModel();
             Contact.PropertyChanged += Model_PropertyChanged;
@@ -183,7 +200,7 @@ namespace ViewModels.Implementations
 
         private void CloseWindow()
         {
-            ModalDialogResult = false;
+            
         }
 
         /// <summary>
@@ -218,6 +235,16 @@ namespace ViewModels.Implementations
             newContact.WasModelChanged = true;
 
             return _cloneService.CloneObject(Contact);
+        }
+
+        private void Save()
+        {
+
+        }
+
+        private bool CanSave()
+        {
+            return !HasErrors && !Contact.HasErrors;
         }
 
         private void AddNumber()
@@ -358,12 +385,30 @@ namespace ViewModels.Implementations
             {
                 string result = null;
 
-                if (propertyName == nameof(EditablePhoneNumber))
+                switch (propertyName)
                 {
-                    if (!ValidationManager.ContainsOnlyNumbers(EditablePhoneNumber)) return "Номер должен содержать только цифры";
+                    case "EditablePhoneNumber":
+                        ClearErrors(propertyName);
+                        if (!ValidationManager.ContainsOnlyNumbers(EditablePhoneNumber)) result = "Номер должен содержать только цифры";
+                        break;
+                    default:
+                        break;
                 }
 
+                if (ErrorCollection.ContainsKey(propertyName)) ErrorCollection[propertyName] = result;
+                else if (result != null) ErrorCollection.Add(propertyName, result);
+
                 return result;
+            }
+        }
+
+        public bool HasErrors => ErrorCollection.Any();
+
+        private void ClearErrors(string propName)
+        {
+            if (ErrorCollection.ContainsKey(propName))
+            {
+                ErrorCollection.Remove(propName);
             }
         }
 

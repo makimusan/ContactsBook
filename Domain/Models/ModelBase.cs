@@ -1,9 +1,12 @@
-﻿using System.ComponentModel;
+﻿using ContactsBook.Helpers.Validation;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace ContactsBook.Domain.Models
 {
-    public abstract class ModelBase : INotifyPropertyChanged
+    public abstract class ModelBase : INotifyPropertyChanged, IDataErrorInfo
     {
         #region Свойства
 
@@ -40,6 +43,23 @@ namespace ContactsBook.Domain.Models
             }
         }
 
+        private Dictionary<string, string> errorCollection;
+        /// <summary>
+        /// Коллекция со списком ошибок
+        /// </summary>
+        public Dictionary<string, string> ErrorCollection 
+        {
+            get { return errorCollection ?? (errorCollection = new Dictionary<string, string>()); } 
+            private set
+            {
+                if(value != errorCollection)
+                {
+                    OnPropertyChanged(nameof(ErrorCollection));
+                    errorCollection = value;
+                }
+            } 
+        }
+
         #endregion
 
         #region Реализация интерфейса INotifyPropertyChanged
@@ -59,6 +79,51 @@ namespace ContactsBook.Domain.Models
         {
             WasModelChanged = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+
+        #region Валидация IDataErrorInfo
+
+        public string Error => null;
+
+        /// <summary>
+        /// Вызывается при изменении свойства
+        /// </summary>
+        /// <param name="propName"></param>
+        /// <returns></returns>
+        public virtual string this[string propName]
+        {
+            get
+            {
+                string result = null;
+
+                switch (propName)
+                {
+                    default:
+                        ClearErrors(propName);
+                        break;
+                }
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Флаг наличия ошибок в моделе
+        /// </summary>
+        public virtual bool HasErrors => ErrorCollection.Any();
+
+        /// <summary>
+        /// Очищает список ошибок для определённого свойства
+        /// </summary>
+        /// <param name="propName">Имя свойства</param>
+        public virtual void ClearErrors(string propName)
+        {
+            if (ErrorCollection.ContainsKey(propName))
+            {
+                ErrorCollection.Remove(propName);
+            }
         }
 
         #endregion

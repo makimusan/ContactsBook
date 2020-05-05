@@ -26,7 +26,6 @@ namespace ViewModels.Implementations
         #region Конструктор
         public ContactsViewModel() : base()
         {
-            InitializeViewModel();
         }
         #endregion
 

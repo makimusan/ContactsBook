@@ -1,13 +1,12 @@
 ﻿using ContactsBook.Helpers.Validation;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace ContactsBook.Domain.Models
 {
     /// <summary>
     /// Сущность контакта
     /// </summary>
-    public class ContactModel : ModelBase, IDataErrorInfo
+    public class ContactModel : ModelBase
     {
         #region Свойства
 
@@ -83,19 +82,26 @@ namespace ContactsBook.Domain.Models
 
         #region Валидация IDataErrorInfo
 
-        public string Error => null;
-
-        public string this[string columnName] 
+        public override string this[string propName] 
         {
             get
             {
                 string result = null;
 
-                switch (columnName)
+                switch (propName)
                 {
-                    case "Name": if(!ValidationManager.ContainsOnlyLetters(Name)) result = "Имя должно содержать только буквы"; break;
-                    case "SurName": if(!ValidationManager.ContainsOnlyLetters(SurName)) result = "Фамилия должна содержать только буквы"; break;
+                    case "Name":
+                        ClearErrors(propName);
+                        if (!ValidationManager.ContainsOnlyLetters(Name)) result = "Имя должно содержать только буквы"; 
+                        break;
+                    case "SurName":
+                        ClearErrors(propName);
+                        if(!ValidationManager.ContainsOnlyLetters(SurName)) result = "Фамилия должна содержать только буквы"; 
+                        break;
                 }
+
+                if (ErrorCollection.ContainsKey(propName)) ErrorCollection[propName] = result;
+                else if (result != null) ErrorCollection.Add(propName, result);
 
                 return result;
             }

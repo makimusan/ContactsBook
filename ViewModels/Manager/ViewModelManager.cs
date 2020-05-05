@@ -13,7 +13,9 @@ namespace ViewModels.Manager
     {
         public static IContactsViewModel GetContactsViewModel()
         {
-            return new ContactsViewModel();
+            IContactsViewModel contactsViewModel = new ContactsViewModel();
+            contactsViewModel.InitializeViewModel();
+            return contactsViewModel;
         }
 
         public static IContactPopupViewModel GetContactViewModel(ContactModel contactModel = null)

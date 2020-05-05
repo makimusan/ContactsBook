@@ -58,7 +58,7 @@ namespace ViewModels.Base
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        protected virtual void OnDataChanged(string propertyName)
+        protected virtual void OnDataChanged([CallerMemberName] string propertyName = null)
         {
             WasModelChanged = true;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
