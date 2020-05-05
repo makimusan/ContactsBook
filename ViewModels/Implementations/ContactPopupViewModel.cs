@@ -160,7 +160,7 @@ namespace ViewModels.Implementations
             DeleteNumberCommand = new UICommand(obj => { PhoneNumbers.Remove(PhoneNumber); }, cex => PhoneNumber != null);
             AddEMailCommand = new UICommand(obj => AddEMail(), cex => CanAddEMail());
             EditEMailCommand = new UICommand(obj => EditEMail(), cex => CanEditEMail());
-            DeleteEMailCommand = new UICommand(obj => { EMails.Remove(EMail); }, cex => EMail != null);
+            DeleteEMailCommand = new UICommand(obj => { EMail.IsDeleted = true; }, cex => EMail != null);
 
             Contact = contactModel != null ? CloneContact(contactModel) : new ContactModel();
         }

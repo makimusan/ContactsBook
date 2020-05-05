@@ -72,6 +72,19 @@ namespace ContactsBook.Domain.Repository
             }
         }
 
+        public void DeleteEMails(IList<EMail> eMails)
+        {
+            using (ContactsBookEntities contextDB = new ContactsBookEntities(_connectionManger.GetConnectionString()))
+            {
+                foreach (var item in eMails)
+                {
+                    contextDB.EMails.Attach(item);
+                }
+                contextDB.EMails.RemoveRange(eMails);
+                contextDB.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }

@@ -83,6 +83,16 @@ namespace Infrastructure.Factories
             return eMailModels;
         }
 
+        public IList<EMail> CreateContactMails(IList<MailModel> contactMails)
+        {
+            List<EMail> eMailModels = new List<EMail>();
+            foreach (var item in contactMails)
+            {
+                eMailModels.Add(CreateEMail(item));
+            }
+            return eMailModels;
+        }
+
         public IList<PhoneNumberModel> CreateContactPhoneNumbers(IList<PhoneNumber> contactPhoneNumbers)
         {
             List<PhoneNumberModel> phoneNumberModels = new List<PhoneNumberModel>();
@@ -111,6 +121,11 @@ namespace Infrastructure.Factories
         public EMail CreateEMail(MailModel contactEMail, int contactID, Contact contact)
         {
             return new EMail() { ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact, ContactID = contactID, Contact = contact };
+        }
+
+        public EMail CreateEMail(MailModel contactEMail)
+        {
+            return new EMail() { ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact };
         }
 
         public PhoneNumberModel CreatePhoneNumber(PhoneNumber contactPhoneNumber)

@@ -55,6 +55,7 @@ namespace Infrastructure.Factories
         /// <param name="contactMails"></param>
         /// <returns></returns>
         IList<EMail> CreateContactMails(IList<MailModel> contactMails, int contactID, Contact contact);
+        IList<EMail> CreateContactMails(IList<MailModel> contactMails);
 
         /// <summary>
         /// Возвращает <see cref="MailModel"/> контакта
@@ -69,6 +70,7 @@ namespace Infrastructure.Factories
         /// <param name="contacts"></param>
         /// <returns></returns>
         EMail CreateEMail(MailModel contactEMail, int contactID, Contact contact);
+        EMail CreateEMail(MailModel contactEMail);
 
         /// <summary>
         /// Возвращает список сущностей <see cref="PhoneNumberModel"/> контактов
