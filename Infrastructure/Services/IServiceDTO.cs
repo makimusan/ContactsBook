@@ -18,6 +18,12 @@ namespace Infrastructure.Services
         /// </summary>
         /// <returns></returns>
         IList<ContactModel> GetContacts();
+
+        /// <summary>
+        /// Сохраняет список контактов
+        /// </summary>
+        /// <param name="contactModels"></param>
+        void SaveContacts(IList<ContactModel> contactModels);
         #endregion
     }
 }

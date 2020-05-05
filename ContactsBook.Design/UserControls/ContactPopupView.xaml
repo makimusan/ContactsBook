@@ -6,17 +6,15 @@
              xmlns:local="clr-namespace:ContactsBook.Design.UserControls"
              mc:Ignorable="d" 
              Height="209" Width="500">
-    <!--<UserControl.Resources>
-        <Style TargetType="TextBox">
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Setter Property="ToolTip" 
-                            Value="{Binding RelativeSource={x:Static RelativeSource.Self}, 
-                                            Path=(Validation.Errors).CurrentItem.ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </UserControl.Resources>-->
+    <UserControl.Resources>
+        <ControlTemplate x:Key="WarningValidationTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="Yellow" BorderThickness="2">
+                    <AdornedElementPlaceholder/>
+                </Border>
+            </StackPanel>
+        </ControlTemplate>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -34,15 +32,18 @@
             <StackPanel Grid.Column="0" Orientation="Vertical" Margin="8 20 4 0">
                 <TextBlock Text="Имя"/>
                 <TextBox Text="{Binding Path=Contact.Name, UpdateSourceTrigger=PropertyChanged, 
-                                        ValidatesOnDataErrors=True}"/>
+                                        ValidatesOnDataErrors=True}"
+                         ToolTip="{Binding Path=Contact.ErrorCollection[Name]}"/>
                 <TextBlock Text="Фамилия"/>
                 <TextBox Text="{Binding Path=Contact.SurName, UpdateSourceTrigger=PropertyChanged,
                                         ValidatesOnDataErrors=True}"
                          ToolTip="{Binding Path=Contact.ErrorCollection[SurName]}"/>
+                
                 <TextBlock Text="Номер телефона"/>
                 <TextBox Text="{Binding Path=EditablePhoneNumber, UpdateSourceTrigger=PropertyChanged, 
                                         ValidatesOnDataErrors=True}"
-                         ToolTip="{Binding Path=ErrorCollection[EditablePhoneNumber]}"/>
+                         ToolTip="{Binding Path=ErrorCollection[EditablePhoneNumber]}"
+                         Validation.ErrorTemplate="{StaticResource WarningValidationTemplate}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="+" Width="20" ToolTip="Добавить"
                             Command="{Binding Path=AddNumberCommand}"/>
@@ -51,8 +52,12 @@
                     <Button Content="-" Width="20" ToolTip="Удалить"
                             Command="{Binding Path=DeleteNumberCommand}"/>
                 </StackPanel>
+                
                 <TextBlock Text="Почта @"/>
-                <TextBox Text="{Binding Path=EditableEMail, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBox Text="{Binding Path=EditableEMail, UpdateSourceTrigger=PropertyChanged,
+                                        ValidatesOnDataErrors=True}"
+                         ToolTip="{Binding Path=ErrorCollection[EditableEMail]}"
+                         Validation.ErrorTemplate="{StaticResource WarningValidationTemplate}"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Content="+" Width="20" ToolTip="Добавить"
                             Command="{Binding Path=AddEMailCommand}"/>

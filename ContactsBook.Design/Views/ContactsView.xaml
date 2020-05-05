@@ -7,7 +7,9 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="{Binding Path=ViewTitle}" 
-        Height="450" Width="800" WindowStartupLocation="CenterScreen"
+        MinHeight="450" MinWidth="800"
+        Height="450" Width="800"
+        WindowStartupLocation="CenterScreen"
         x:Name="HauptFenster">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -29,6 +31,11 @@
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=IsDeleted}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
                 </Style>
             </ListView.ItemContainerStyle>
 
@@ -90,5 +97,11 @@
                     Command="{Binding Path=DeleteContactCommand}"
                     Margin="0 6" Height="30"/>
         </StackPanel>
+
+        <Button Content="Сохранить изменения"
+                VerticalAlignment="Bottom"
+                Grid.Column="1"
+                Command="{Binding Path=SaveCommand}"
+                Margin="10 6" Height="30"/>
     </Grid>
 </Window>

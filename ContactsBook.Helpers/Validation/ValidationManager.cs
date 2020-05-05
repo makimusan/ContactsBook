@@ -54,5 +54,20 @@ namespace ContactsBook.Helpers.Validation
             return true;
         }
 
+        /// <summary>
+        /// Возвращает результат проверки поля на содержание только букв.
+        /// Включает проверку на пустое поле
+        /// </summary>
+        /// <param name="correntString"></param>
+        /// <returns></returns>
+        public static bool IsEMail(string currentString)
+        {
+            if (string.IsNullOrEmpty(currentString)) return false;
+
+            if (currentString.Contains("@")) return true;
+
+            return false;
+        }
+
     }
 }

@@ -1,4 +1,4 @@
-﻿// Создание кода T4 для модели "d:\PROJECTs\VS\ContactsBook\Domain\DataStructs\ContactsBook_DB_Model.edmx" включено. 
+﻿// Создание кода T4 для модели "D:\PEOJECTs\VS2019\2020\ContactsBook\Domain\DataStructs\ContactsBook_DB_Model.edmx" включено. 
 // Чтобы включить формирование кода прежних версий, измените значение свойства "Стратегия создания кода" конструктора
 // на "Legacy ObjectContext". Это свойство доступно в окне "Свойства", если модель
 // открыта в конструкторе.

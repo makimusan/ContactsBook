@@ -36,6 +36,13 @@ namespace Infrastructure.Services
         {
           return _factory.CreateContacts(_repository.GetContacts());
         }
+
+        public void SaveContacts(IList<ContactModel> contactModels)
+        {
+            _repository.DeleteContacts(_factory.CreateContacts(contactModels.Where(c => c.IsDeleted).ToList()));
+            //_repository.UpdateContacts(_factory.CreateContacts(contactModels.Where(c => c.ID > 0 && !c.IsDeleted).ToList()));
+            _repository.CreateContacts(_factory.CreateContacts(contactModels.Where(c => c.ID == 0).ToList()));
+        }
         #endregion
 
         #endregion

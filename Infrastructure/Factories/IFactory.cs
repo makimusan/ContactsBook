@@ -54,7 +54,7 @@ namespace Infrastructure.Factories
         /// </summary>
         /// <param name="contactMails"></param>
         /// <returns></returns>
-        IList<EMail> CreateContactMails(IList<MailModel> contactMails);
+        IList<EMail> CreateContactMails(IList<MailModel> contactMails, int contactID, Contact contact);
 
         /// <summary>
         /// Возвращает <see cref="MailModel"/> контакта
@@ -68,7 +68,7 @@ namespace Infrastructure.Factories
         /// </summary>
         /// <param name="contacts"></param>
         /// <returns></returns>
-        EMail CreateEMail(MailModel contactEMail);
+        EMail CreateEMail(MailModel contactEMail, int contactID, Contact contact);
 
         /// <summary>
         /// Возвращает список сущностей <see cref="PhoneNumberModel"/> контактов
@@ -82,7 +82,7 @@ namespace Infrastructure.Factories
         /// </summary>
         /// <param name="contactPhoneNumbers"></param>
         /// <returns></returns>
-        IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers);
+        IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers, int contactID, Contact contact);
 
         /// <summary>
         /// Возвращает <see cref="PhoneNumberModel"/> контакта
@@ -96,7 +96,7 @@ namespace Infrastructure.Factories
         /// </summary>
         /// <param name="contactPhoneNumber"></param>
         /// <returns></returns>
-        PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber);
+        PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber, int contactID, Contact contact);
 
         #endregion
     }

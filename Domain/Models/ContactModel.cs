@@ -22,7 +22,7 @@ namespace ContactsBook.Domain.Models
                 if (value != name)
                 {
                     name = value;
-                    OnPropertyChanged(nameof(Name));
+                    OnDataChanged(nameof(Name));
                 }
             }
         }
@@ -39,7 +39,7 @@ namespace ContactsBook.Domain.Models
                 if (value != surName)
                 {
                     surName = value;
-                    OnPropertyChanged(nameof(SurName));
+                    OnDataChanged(nameof(SurName));
                 }
             }
         }
@@ -100,8 +100,7 @@ namespace ContactsBook.Domain.Models
                         break;
                 }
 
-                if (ErrorCollection.ContainsKey(propName)) ErrorCollection[propName] = result;
-                else if (result != null) ErrorCollection.Add(propName, result);
+                AddErrorToCollection(propName, result);
 
                 return result;
             }

@@ -1,9 +1,6 @@
 ﻿using ContactsBook.Domain.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ViewModels.Interfaces;
 using ViewModels.Base;
 using Infrastructure.Services;
@@ -11,13 +8,11 @@ using System.Windows.Input;
 using Infrastructure.Commands;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using ContactsBook.Domain.DataStructs;
-using ViewModels.Manager;
 using ContactsBook.Helpers.Validation;
 
 namespace ViewModels.Implementations
 {
-    class ContactPopupViewModel : ViewModelBase, IContactPopupViewModel, IDataErrorInfo
+    class ContactPopupViewModel : ViewModelBase, IContactPopupViewModel
     {
         #region Поля
         private IServiceDTO _serviceDTO;
@@ -108,24 +103,7 @@ namespace ViewModels.Implementations
             }
         }
 
-        public string ViewTitle => "Редактирование контакта";
-
-        private Dictionary<string, string> errorCollection;
-        /// <summary>
-        /// Коллекция со списком ошибок
-        /// </summary>
-        public Dictionary<string, string> ErrorCollection
-        {
-            get { return errorCollection ?? (errorCollection = new Dictionary<string, string>()); }
-            private set
-            {
-                if (value != errorCollection)
-                {
-                    OnPropertyChanged(nameof(ErrorCollection));
-                    errorCollection = value;
-                }
-            }
-        }
+        public override string ViewTitle => "Редактирование контакта";
 
         #region Обертки над свойствами
 
@@ -177,17 +155,14 @@ namespace ViewModels.Implementations
 
             SaveCommand = new UICommand(obj => Save(), cex => CanSave());
             CloseWindowCommand = new UICommand(obj => CloseWindow());
-            AddNumberCommand = new UICommand(obj => AddNumber(), cex => !HasErrors/*CanAddNumber()*/);
+            AddNumberCommand = new UICommand(obj => AddNumber(), cex => CanAddNumber());
             EditNumberCommand = new UICommand(obj => EditNumber(), cex => CanEditNumber());
             DeleteNumberCommand = new UICommand(obj => { PhoneNumbers.Remove(PhoneNumber); }, cex => PhoneNumber != null);
             AddEMailCommand = new UICommand(obj => AddEMail(), cex => CanAddEMail());
             EditEMailCommand = new UICommand(obj => EditEMail(), cex => CanEditEMail());
             DeleteEMailCommand = new UICommand(obj => { EMails.Remove(EMail); }, cex => EMail != null);
 
-            ErrorCollection = new Dictionary<string, string>();
-
             Contact = contactModel != null ? CloneContact(contactModel) : new ContactModel();
-            Contact.PropertyChanged += Model_PropertyChanged;
         }
 
         public void OnClosingWindow(object sender, CancelEventArgs e)
@@ -232,7 +207,6 @@ namespace ViewModels.Implementations
             Contact.PhoneNumbers = new List<PhoneNumberModel>(PhoneNumbers.ToList());
             Contact.MailsOfContact = new List<MailModel>(EMails.ToList());
             var newContact = _cloneService.CloneObject(Contact);
-            newContact.WasModelChanged = true;
 
             return _cloneService.CloneObject(Contact);
         }
@@ -244,7 +218,7 @@ namespace ViewModels.Implementations
 
         private bool CanSave()
         {
-            return !HasErrors && !Contact.HasErrors;
+            return !Contact.HasErrors;
         }
 
         private void AddNumber()
@@ -254,6 +228,8 @@ namespace ViewModels.Implementations
 
         private bool CanAddNumber()
         {
+            if(ErrorCollection.ContainsKey(nameof(EditablePhoneNumber))) return false;
+
             if (string.IsNullOrWhiteSpace(EditablePhoneNumber)) return false;
 
             if (PhoneNumbers.Count == 0) return true;
@@ -270,6 +246,8 @@ namespace ViewModels.Implementations
 
         private bool CanEditNumber()
         {
+            if (ErrorCollection.ContainsKey(nameof(EditablePhoneNumber))) return false;
+
             if (string.IsNullOrWhiteSpace(editablePhoneNumber)) return false;
 
             if (PhoneNumber == null) return false;
@@ -286,6 +264,8 @@ namespace ViewModels.Implementations
 
         private bool CanAddEMail()
         {
+            if (ErrorCollection.ContainsKey(nameof(EditableEMail))) return false;
+
             if (string.IsNullOrWhiteSpace(EditableEMail)) return false;
 
             if (EMails.Count == 0) return true;
@@ -302,6 +282,8 @@ namespace ViewModels.Implementations
 
         private bool CanEditEMail()
         {
+            if (ErrorCollection.ContainsKey(nameof(EditableEMail))) return false;
+
             if (string.IsNullOrWhiteSpace(EditableEMail)) return false;
 
             if (EMail == null) return false;
@@ -309,25 +291,6 @@ namespace ViewModels.Implementations
             if (EMails.FirstOrDefault(m => m.MailOfContact.Equals(EditableEMail)) == null) return true;
 
             return false;
-        }
-
-        private void OnOptionalServicesListChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (e.OldItems != null)
-            {
-                foreach (INotifyPropertyChanged item in e.OldItems)
-                    item.PropertyChanged -= Model_PropertyChanged;
-            }
-            if (e.NewItems != null)
-            {
-                foreach (INotifyPropertyChanged item in e.NewItems)
-                    item.PropertyChanged += Model_PropertyChanged;
-            }
-        }
-
-        private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            OnDataChanged(e.PropertyName);
         }
 
         #endregion
@@ -375,11 +338,9 @@ namespace ViewModels.Implementations
         }
         #endregion
 
-        #region
+        #region Валидация
 
-        public string Error => null;
-
-        public string this[string propertyName]
+        public override string this[string propertyName]
         {
             get
             {
@@ -391,24 +352,17 @@ namespace ViewModels.Implementations
                         ClearErrors(propertyName);
                         if (!ValidationManager.ContainsOnlyNumbers(EditablePhoneNumber)) result = "Номер должен содержать только цифры";
                         break;
+                    case "EditableEMail":
+                        ClearErrors(propertyName);
+                        if (!ValidationManager.IsEMail(EditableEMail)) result = "Запись не является адресом @";
+                        break;
                     default:
                         break;
                 }
 
-                if (ErrorCollection.ContainsKey(propertyName)) ErrorCollection[propertyName] = result;
-                else if (result != null) ErrorCollection.Add(propertyName, result);
+                AddErrorToCollection(propertyName, result);
 
                 return result;
-            }
-        }
-
-        public bool HasErrors => ErrorCollection.Any();
-
-        private void ClearErrors(string propName)
-        {
-            if (ErrorCollection.ContainsKey(propName))
-            {
-                ErrorCollection.Remove(propName);
             }
         }
 

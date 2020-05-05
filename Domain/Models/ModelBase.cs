@@ -43,6 +43,23 @@ namespace ContactsBook.Domain.Models
             }
         }
 
+        private bool isDeleted;
+
+        public bool IsDeleted
+        {
+            get { return isDeleted; }
+            set 
+            { 
+                if(value != isDeleted)
+                {
+                    isDeleted = value;
+                    OnDataChanged(nameof(IsDeleted));
+                }
+                
+            }
+        }
+
+
         private Dictionary<string, string> errorCollection;
         /// <summary>
         /// Коллекция со списком ошибок
@@ -105,6 +122,8 @@ namespace ContactsBook.Domain.Models
                         break;
                 }
 
+                AddErrorToCollection(propName, result);
+
                 return result;
             }
         }
@@ -124,6 +143,17 @@ namespace ContactsBook.Domain.Models
             {
                 ErrorCollection.Remove(propName);
             }
+        }
+
+        /// <summary>
+        /// Добавляет ошибки в словарь
+        /// </summary>
+        /// <param name="propName">Имя свойства</param>
+        /// <param name="errorMessage">Сообщение об ошибке</param>
+        public virtual void AddErrorToCollection(string propName, string errorMessage)
+        {
+            if (ErrorCollection.ContainsKey(propName)) ErrorCollection[propName] = errorMessage;
+            else if (errorMessage != null) ErrorCollection.Add(propName, errorMessage);
         }
 
         #endregion

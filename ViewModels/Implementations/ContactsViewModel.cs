@@ -61,7 +61,7 @@ namespace ViewModels.Implementations
         }
 
 
-        public string ViewTitle => "Справочник контактов";
+        public override string ViewTitle => "Справочник контактов";
 
         #endregion
 
@@ -72,13 +72,23 @@ namespace ViewModels.Implementations
             _serviceLocator = new ServiceLocator();
 
             Contacts = new ObservableCollection<ContactModel>(_serviceDTO.GetContacts());
-            WasModelChanged = false;
+            InitContacts();
 
+            SaveCommand = new UICommand(obj => Save(), cex => CanSave());
             CreateContactCommand = new UICommand(obj => ShowCreateContactWindow());
             EditContactCommand = new UICommand(obj => ShowEditContactWindow(), ced => HasSelectedContact());
             DeleteContactCommand = new UICommand(obj => DeleteContact(), cd => HasSelectedContact());
 
-            SubscribeToEvent();
+        }
+
+        private void Save()
+        {
+            _serviceDTO.SaveContacts(Contacts.Where(c => c.WasModelChanged).ToList());
+        }
+
+        private bool CanSave()
+        {
+            return Contacts.Any(c => c.WasModelChanged);
         }
 
         private bool HasSelectedContact()
@@ -89,8 +99,8 @@ namespace ViewModels.Implementations
         private void DeleteContact()
         {
             if (contact == null) return;
-
-            Contacts.Remove(Contact);
+            Contact.IsDeleted = true;
+            //Contacts.Remove(Contact);
         }
 
         public void OnClosingWindow(object sender, CancelEventArgs e)
@@ -118,6 +128,11 @@ namespace ViewModels.Implementations
         }
 
         public ICommand CloseWindowCommand
+        {
+            get; private set;
+        }
+        
+        public ICommand SaveCommand
         {
             get; private set;
         }
@@ -176,9 +191,15 @@ namespace ViewModels.Implementations
             return true;
         }
 
-        private void SubscribeToEvent()
+        /// <summary>
+        /// Инициализация новых контактов после добавления
+        /// </summary>
+        private void InitContacts()
         {
-            
+            foreach (var item in Contacts)
+            {
+                item.WasModelChanged = false;
+            }
         }
         #endregion
     }

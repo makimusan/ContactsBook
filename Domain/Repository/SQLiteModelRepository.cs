@@ -38,6 +38,40 @@ namespace ContactsBook.Domain.Repository
             return contacts;
         }
 
+        public void UpdateContacts(IList<Contact> contacts)
+        {
+            using (ContactsBookEntities contextDB = new ContactsBookEntities(_connectionManger.GetConnectionString()))
+            {
+                //contacts = contextDB.Contacts.Include(c => c.EMails).Include(c => c.PhoneNumbers).ToList();
+            }
+        }
+        
+        public void DeleteContacts(IList<Contact> contacts)
+        {
+            using (ContactsBookEntities contextDB = new ContactsBookEntities(_connectionManger.GetConnectionString()))
+            {
+                foreach (var item in contacts)
+                {
+                    contextDB.Contacts.Attach(item);
+                }
+                contextDB.Contacts.RemoveRange(contacts.ToList());
+                contextDB.SaveChanges();
+            }
+        }
+
+        public void CreateContacts(IList<Contact> contacts)
+        {
+            using (ContactsBookEntities contextDB = new ContactsBookEntities(_connectionManger.GetConnectionString()))
+            {
+                foreach (var item in contacts)
+                {
+                    contextDB.Entry(item);
+                }
+                contextDB.Contacts.AddRange(contacts.ToList());
+                contextDB.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }
