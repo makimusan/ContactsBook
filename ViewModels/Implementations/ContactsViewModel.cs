@@ -21,6 +21,7 @@ namespace ViewModels.Implementations
         #region Поля
         private IServiceDTO _serviceDTO;
         private IServiceLocator _serviceLocator;
+        private ContactModel _contactModelBackUp;
         #endregion
 
         #region Конструктор
@@ -73,7 +74,7 @@ namespace ViewModels.Implementations
 
             UpdateContacts();
 
-            SaveCommand = new UICommand(obj => Save(), cex => CanSave());
+            SaveCommand = new UICommand(obj => Save(), cex => HasChanges());
             CreateContactCommand = new UICommand(obj => ShowCreateContactWindow());
             EditContactCommand = new UICommand(obj => ShowEditContactWindow(), ced => HasSelectedContact());
             DeleteContactCommand = new UICommand(obj => DeleteContact(), cd => HasSelectedContact());
@@ -87,7 +88,7 @@ namespace ViewModels.Implementations
             UpdateContacts();
         }
 
-        private bool CanSave()
+        private bool HasChanges()
         {
             return Contacts.Any(c => c.WasModelChanged);
         }
@@ -111,12 +112,22 @@ namespace ViewModels.Implementations
         {
             if (contact == null) return;
             Contact.IsDeleted = true;
-            //Contacts.Remove(Contact);
+            Contact = null;
         }
 
         public void OnClosingWindow(object sender, CancelEventArgs e)
         {
+            if (HasChanges())
+            {
+                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!/nВы уверены?") == true) 
+                {
+                    e.Cancel = false;
+                    return;
+                }
+                e.Cancel = true;
+            }
             e.Cancel = false;
+
         }
 
         #endregion
@@ -159,8 +170,12 @@ namespace ViewModels.Implementations
             var vm = ViewModelManager.GetContactViewModel();
             if (_serviceLocator.ActivateContactWindowDialog(vm) == true)
             {
-                var newContact = vm.GetNewContact();
-                if (!CheckEMails(newContact.MailsOfContact.ToList()) || !CheckPhoneNumbers(newContact.PhoneNumbers.ToList())) return;
+                var newContact = vm.GetContact();
+                if (!CheckEMails(newContact.MailsOfContact.ToList()) || !CheckPhoneNumbers(newContact.PhoneNumbers.ToList()))
+                {
+                    _serviceLocator.ShowInfoDialog("ВНИМАНИЕ!!!", "Значения телефонного номера и @ должны быть уникальны в рамках одного контакта!");
+                    return;
+                }
 
                 Contacts.Add(newContact);
             }
@@ -168,12 +183,22 @@ namespace ViewModels.Implementations
 
         private void ShowEditContactWindow()
         {
+            _contactModelBackUp = Contact;
             var vm = ViewModelManager.GetContactViewModel(Contact);
             if (_serviceLocator.ActivateContactWindowDialog(vm) == true)
             {
-                Contact = vm.GetChangedContact();
+                var changedContact = vm.GetContact();
+                if (!CheckEMails(changedContact.MailsOfContact.ToList()) || !CheckPhoneNumbers(changedContact.PhoneNumbers.ToList()))
+                {
+                    _serviceLocator.ShowInfoDialog("ВНИМАНИЕ!!!", "Значения телефонного номера и @ должны быть уникальны в рамках одного контакта!");
+                    _contactModelBackUp = null;
+                    return;
+                }
+                var index = Contacts.IndexOf(_contactModelBackUp);
+                Contacts.Remove(Contact);
+                _contactModelBackUp = null;
+                Contacts.Insert(index, changedContact);
             }
-
         }
 
         private bool CheckEMails(List<MailModel> mailModels)
@@ -182,8 +207,12 @@ namespace ViewModels.Implementations
 
             foreach (var item in Contacts)
             {
-                var res = item.MailsOfContact.FirstOrDefault(m => mailAddresses.Contains(m.MailOfContact));
-                if (res != null) return false;
+                if(_contactModelBackUp == null || item.ID != _contactModelBackUp.ID)
+                {
+                    var res = item.MailsOfContact.FirstOrDefault(m => mailAddresses.Contains(m.MailOfContact));
+                    if (res != null) return false;
+                }
+                
             }
 
             return true;
@@ -195,8 +224,11 @@ namespace ViewModels.Implementations
 
             foreach (var item in Contacts)
             {
-                var res = item.PhoneNumbers.FirstOrDefault(phn => onlyPhoneNumbers.Contains(phn.PhoneNumber));
-                if (res != null) return false;
+                if (_contactModelBackUp == null || item.ID != _contactModelBackUp.ID)
+                {
+                    var res = item.PhoneNumbers.FirstOrDefault(phn => onlyPhoneNumbers.Contains(phn.PhoneNumber));
+                    if (res != null) return false;
+                }
             }
 
             return true;

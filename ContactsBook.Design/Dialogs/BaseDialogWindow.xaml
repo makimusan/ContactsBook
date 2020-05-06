@@ -9,7 +9,7 @@
         Title="BaseDialogWindow"
         WindowStyle="None" WindowStartupLocation="CenterOwner" 
         ResizeMode="NoResize" SizeToContent="WidthAndHeight">
-    <Border BorderBrush="Black" BorderThickness="3 3 3 3">
+    <Border BorderBrush="Black" BorderThickness="3">
         <!--Главная сетка-->
         <Grid x:Name="HauptGrid" Background="White">
             <Grid.RowDefinitions>
@@ -29,6 +29,7 @@
             <ContentControl Name="ContentContainer" 
                             Grid.Row="1" 
                             Margin="0"/>
+            <!--Панель для кнопок-->
             <StackPanel Name="ButtonContainer" Grid.Row="2" Orientation="Horizontal"
                         HorizontalAlignment="Right" Margin="0 8">
                 <StackPanel.Resources>
@@ -37,9 +38,9 @@
                         <Setter Property="MinWidth" Value="100"/>
                         <Setter Property="Margin" Value="0 0 8 0"/>
                     </Style>
-
                 </StackPanel.Resources>
             </StackPanel>
+            <!---->
         </Grid>
     </Border>
 </Window>

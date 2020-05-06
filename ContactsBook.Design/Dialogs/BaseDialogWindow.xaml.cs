@@ -2,7 +2,6 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 
 namespace ContactsBook.Design.Dialogs
@@ -48,24 +47,10 @@ namespace ContactsBook.Design.Dialogs
             ButtonContainer.Children.Add(button);
         }
 
-        //private Binding AddBinding(string bindingPath)
-        //{
-        //    switch (bindingPath)
-        //    {
-        //        case "SaveCommand":
-        //            return new Binding(bindingPath);
-        //        default:
-        //            throw new ArgumentException("Unknown binding value", "Binding command");
-        //    }
-        //}
-
         public static BaseDialogWindow GetWindowDialog(UserControl userControl)
         {
             BaseDialogWindow dialog = new BaseDialogWindow();
-            //dialog.lbl_Title.Content = _caption;
             dialog.ContentContainer.Content = userControl;
-            //dialog.Height = userControl.Height;
-            //dialog.Width = userControl.Width;
             dialog.AddButtons(MessageBoxButton.YesNo);
             return dialog;
         }

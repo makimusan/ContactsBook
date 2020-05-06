@@ -29,5 +29,21 @@ namespace ContactsBook.Locator.Services
             return view.ShowDialog();
         }
 
+        public bool? ShowQuestionDialog(string title, string question)
+        {
+            IView view = BaseDialog.ShowQuestionDialog(title, question);
+            view.Owner = Application.Current.MainWindow;
+
+            return view.ShowDialog();
+        }
+
+        public bool? ShowInfoDialog(string title, string question)
+        {
+            IView view = BaseDialog.ShowInfoDialog(title, question);
+            view.Owner = Application.Current.MainWindow;
+
+            return view.ShowDialog();
+        }
+
     }
 }

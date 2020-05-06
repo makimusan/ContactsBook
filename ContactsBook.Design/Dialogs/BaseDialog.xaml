@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ContactsBook.Design.Dialogs"
         mc:Ignorable="d"
-        Title="BaseDialog" Height="450" Width="800"
-        WindowStyle="None" WindowStartupLocation="CenterScreen">
-    <Border BorderBrush="Black" BorderThickness="3 3 3 3">
+        Title="BaseDialog" Height="209" Width="500"
+        WindowStyle="None" WindowStartupLocation="CenterOwner" 
+        ResizeMode="NoResize">
+    <Border BorderBrush="Black" BorderThickness="3">
         <!--Главная сетка-->
-        <Grid x:Name="HauptGrid" Background="LightGray">
+        <Grid x:Name="HauptGrid" Background="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="28"/>
                 <RowDefinition Height="*"/>
@@ -18,20 +19,22 @@
             <!--Сетка для заголовка окна-->
             <Grid x:Name="grd_Header" Grid.Row="0" Grid.ColumnSpan="2"
                   Background="#FF3F3F46" MouseLeftButtonDown="grd_Header_MouseDown">
-                <Label x:Name="lbl_Title" Content="Base dialog" Foreground="White" Margin="6 0 0 0"/>
+                <TextBlock x:Name="lbl_Title" 
+                           Text="{Binding Path=ViewTitle, FallbackValue=BaseDialog}" 
+                           VerticalAlignment="Center"
+                           Foreground="White" Margin="6 0 0 0"/>
             </Grid>
             <!---->
             <TextBlock Name="MessageContainer" Grid.Row="1" TextWrapping="WrapWithOverflow" Margin="10"
                        FontSize="12pt" Text="Bla-bla-bla-blal" FontFamily="Calibri"/>
             <StackPanel Name="ButtonContainer" Grid.Row="2" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Margin="10">
+                        HorizontalAlignment="Right" Margin="0 8">
                 <StackPanel.Resources>
                     <Style TargetType="Button">
                         <Setter Property="MinHeight" Value="25"/>
-                        <Setter Property="MinWidth" Value="75"/>
-                        <Setter Property="Margin" Value="10,0,0,0"/>
+                        <Setter Property="MinWidth" Value="100"/>
+                        <Setter Property="Margin" Value="0 0 8 0"/>
                     </Style>
-
                 </StackPanel.Resources>
             </StackPanel>
         </Grid>

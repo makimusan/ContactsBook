@@ -9,6 +9,8 @@ using Infrastructure.Commands;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
 using ContactsBook.Helpers.Validation;
+using ContactsBook.Locator.Services;
+using System;
 
 namespace ViewModels.Implementations
 {
@@ -17,7 +19,7 @@ namespace ViewModels.Implementations
         #region Поля
         private IServiceDTO _serviceDTO;
         private ICloneService<ContactModel> _cloneService;
-        private ContactModel _contactModelBackUp;
+        private IServiceLocator _serviceLocator;
         #endregion
 
         #region Конструктор
@@ -152,8 +154,9 @@ namespace ViewModels.Implementations
         {
             _serviceDTO = GetService();
             _cloneService = new ContactCloneService();
+            _serviceLocator = new ServiceLocator();
 
-            SaveCommand = new UICommand(obj => Save(), cex => CanSave());
+            SaveCommand = new UICommand(obj => Save(), cex => HasChanges() && !Contact.HasErrors);
             CloseWindowCommand = new UICommand(obj => CloseWindow());
             AddNumberCommand = new UICommand(obj => AddNumber(), cex => CanAddNumber());
             EditNumberCommand = new UICommand(obj => EditNumber(), cex => CanEditNumber());
@@ -163,13 +166,22 @@ namespace ViewModels.Implementations
             DeleteEMailCommand = new UICommand(obj => DelEMail(), cex => CanDelEMail());
 
             Contact = contactModel != null ? CloneContact(contactModel) : new ContactModel();
+            InitContact();
         }
 
         public void OnClosingWindow(object sender, CancelEventArgs e)
         {
-            _contactModelBackUp = null;
-            PhoneNumbers = null;
-            EMails = null;
+            if (HasChanges())
+            {
+                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!/nВы уверены?") == true)
+                {
+                    PhoneNumbers = null;
+                    EMails = null;
+                    e.Cancel = false;
+                    return;
+                }
+                e.Cancel = true;
+            }
             e.Cancel = false;
         }
 
@@ -183,7 +195,7 @@ namespace ViewModels.Implementations
         /// </summary>
         private ContactModel CloneContact(ContactModel contactModel)
         {
-            _contactModelBackUp = contactModel;
+            //_contactModelBackUp = contactModel;
             ContactModel contact = _cloneService.CloneObject(contactModel);
             PhoneNumbers = new ObservableCollection<PhoneNumberModel>(contact.PhoneNumbers);
             EMails = new ObservableCollection<MailModel>(contact.MailsOfContact);
@@ -191,18 +203,7 @@ namespace ViewModels.Implementations
             return contact;
         }
 
-        public ContactModel GetChangedContact()
-        {
-            _contactModelBackUp.Name = Contact.Name;
-            _contactModelBackUp.SurName = Contact.SurName;
-            _contactModelBackUp.PhoneNumbers = new List<PhoneNumberModel>(PhoneNumbers.ToList());
-            _contactModelBackUp.MailsOfContact = new List<MailModel>(EMails.ToList());
-            _contactModelBackUp.WasModelChanged = true;
-
-            return _contactModelBackUp;
-        }
-
-        public ContactModel GetNewContact()
+        public ContactModel GetContact()
         {
             Contact.PhoneNumbers = new List<PhoneNumberModel>(PhoneNumbers.ToList());
             Contact.MailsOfContact = new List<MailModel>(EMails.ToList());
@@ -216,9 +217,11 @@ namespace ViewModels.Implementations
 
         }
 
-        private bool CanSave()
+        private bool HasChanges()
         {
-            return !Contact.HasErrors;
+            return Contact.WasModelChanged || 
+                   PhoneNumbers.Any(p => p.WasModelChanged) || 
+                   EMails.Any(e => e.WasModelChanged);
         }
 
         private void AddNumber()
@@ -313,6 +316,26 @@ namespace ViewModels.Implementations
             if (EMails.FirstOrDefault(m => m.MailOfContact.Equals(EditableEMail)) == null) return true;
 
             return false;
+        }
+
+        private void InitContact()
+        {
+            Contact.WasModelChanged = false;
+            foreach (var item in PhoneNumbers)
+            {
+                item.WasModelChanged = false;
+            }
+            foreach (var item in EMails)
+            {
+                item.WasModelChanged = false;
+            }
+            PhoneNumbers.CollectionChanged += OnCollectionCanged;
+            EMails.CollectionChanged += OnCollectionCanged;
+        }
+
+        private void OnCollectionCanged(object sender, EventArgs e)
+        {
+            Contact.WasModelChanged = true;
         }
 
         #endregion

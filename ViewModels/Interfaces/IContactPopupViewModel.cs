@@ -29,9 +29,11 @@ namespace ViewModels.Interfaces
 
         void OnClosingWindow(object sender, CancelEventArgs e);
 
-        ContactModel GetChangedContact();
-
-        ContactModel GetNewContact();
+        /// <summary>
+        /// Возвращает новый или изменённый контакт
+        /// </summary>
+        /// <returns></returns>
+        ContactModel GetContact();
 
         #endregion
     }

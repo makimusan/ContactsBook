@@ -74,7 +74,18 @@
                 <ListView Height="160" 
                           ItemsSource="{Binding Path=PhoneNumbers}"
                           SelectedItem="{Binding Path=PhoneNumber}"
-                          DisplayMemberPath="PhoneNumber"/>
+                          DisplayMemberPath="PhoneNumber">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsDeleted}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
             </StackPanel>
 
             <!--Панель для списка Emails-->
@@ -83,7 +94,18 @@
                 <ListView Height="160"
                           ItemsSource="{Binding Path=EMails}"
                           SelectedItem="{Binding Path=EMail}"
-                          DisplayMemberPath="MailOfContact"/>
+                          DisplayMemberPath="MailOfContact">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsDeleted}" Value="True">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
             </StackPanel>
         </Grid>
     </Grid>
