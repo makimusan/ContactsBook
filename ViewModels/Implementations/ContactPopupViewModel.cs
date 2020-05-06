@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using ContactsBook.Helpers.Validation;
 using ContactsBook.Locator.Services;
 using System;
+using System.Collections.Specialized;
 
 namespace ViewModels.Implementations
 {
@@ -330,12 +331,28 @@ namespace ViewModels.Implementations
                 item.WasModelChanged = false;
             }
             PhoneNumbers.CollectionChanged += OnCollectionCanged;
-            EMails.CollectionChanged += OnCollectionCanged;
+            //EMails.CollectionChanged += OnCollectionCanged;
         }
 
-        private void OnCollectionCanged(object sender, EventArgs e)
+        private void OnCollectionCanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                    item.PropertyChanged -= ModelPropertyChanged;
+            }
+            if (e.NewItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                    item.PropertyChanged += ModelPropertyChanged;
+            }
+            
+        }
+
+        private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Contact.WasModelChanged = true;
+            //RaisePropertyChanged(e.PropertyName);
         }
 
         #endregion
