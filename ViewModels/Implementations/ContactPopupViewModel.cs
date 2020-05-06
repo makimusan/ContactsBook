@@ -157,10 +157,10 @@ namespace ViewModels.Implementations
             CloseWindowCommand = new UICommand(obj => CloseWindow());
             AddNumberCommand = new UICommand(obj => AddNumber(), cex => CanAddNumber());
             EditNumberCommand = new UICommand(obj => EditNumber(), cex => CanEditNumber());
-            DeleteNumberCommand = new UICommand(obj => { PhoneNumbers.Remove(PhoneNumber); }, cex => PhoneNumber != null);
+            DeleteNumberCommand = new UICommand(obj => DelNumber(), cex => CanDelNumber());
             AddEMailCommand = new UICommand(obj => AddEMail(), cex => CanAddEMail());
             EditEMailCommand = new UICommand(obj => EditEMail(), cex => CanEditEMail());
-            DeleteEMailCommand = new UICommand(obj => { EMail.IsDeleted = true; }, cex => EMail != null);
+            DeleteEMailCommand = new UICommand(obj => DelEMail(), cex => CanDelEMail());
 
             Contact = contactModel != null ? CloneContact(contactModel) : new ContactModel();
         }
@@ -257,6 +257,17 @@ namespace ViewModels.Implementations
             return false;
         }
 
+        private void DelNumber()
+        {
+            PhoneNumber.IsDeleted = true;
+            PhoneNumber = null;
+        }
+
+        private bool CanDelNumber()
+        {
+            return PhoneNumber != null;
+        }
+
         private void AddEMail()
         {
             EMails.Add(new MailModel() { ID = 0, MailOfContact = EditableEMail });
@@ -278,6 +289,17 @@ namespace ViewModels.Implementations
         private void EditEMail()
         {
             EMail.MailOfContact = EditableEMail;
+        }
+
+        private void DelEMail()
+        {
+            EMail.IsDeleted = true;
+            EMail = null;
+        }
+
+        private bool CanDelEMail()
+        {
+            return EMail != null;
         }
 
         private bool CanEditEMail()

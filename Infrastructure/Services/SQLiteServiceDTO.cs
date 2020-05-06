@@ -55,6 +55,7 @@ namespace Infrastructure.Services
         {
             if (contactModels.Count == 0) return;
 
+            #region Удаление телефонных номеров и @
             IList<MailModel> delEMailModels = GetDeletedEMails(contactModels);
             if(delEMailModels.Count > 0)
             {
@@ -64,7 +65,6 @@ namespace Infrastructure.Services
                     item.MailsOfContact = item.MailsOfContact.Except(delEMailModels).ToList();
                 }
             }
-
             IList<PhoneNumberModel> delPhoneNumberModels = GetDeletedPhoneNumbers(contactModels);
             if (delPhoneNumberModels.Count > 0)
             {
@@ -74,7 +74,9 @@ namespace Infrastructure.Services
                     item.PhoneNumbers = item.PhoneNumbers.Except(delPhoneNumberModels).ToList();
                 }
             }
+            #endregion
 
+            #region Сохранение новых телефонных номеров и @
             var contacts = _factory.CreateContacts(contactModels);
             IList<PhoneNumber> newPhoneNumbers = GetNewPhoneNumbers(contacts);
             if (newPhoneNumbers.Count > 0)
@@ -85,7 +87,17 @@ namespace Infrastructure.Services
                     item.PhoneNumbers = item.PhoneNumbers.Except(newPhoneNumbers).ToList();
                 }
             }
-            
+            IList<EMail> newEMails = GetNewEMails(contacts);
+            if (newEMails.Count > 0)
+            {
+                _repository.CreateEMails(newEMails);
+                foreach (var item in contacts)
+                {
+                    item.EMails = item.EMails.Except(newEMails).ToList();
+                }
+            }
+            #endregion
+
             _repository.UpdateContacts(contacts);
         }
         public void DeleteContacts(IList<ContactModel> contactModels)
@@ -159,13 +171,28 @@ namespace Infrastructure.Services
             foreach (var item in contactModels)
             {
                 var newItems = (item.PhoneNumbers.Where(m => m.ID == 0).ToList());
-                foreach (var delPhoneNumber in newItems)
+                foreach (var newPhoneNumber in newItems)
                 {
-                    newPhoneNumberModels.Add(delPhoneNumber);
+                    newPhoneNumberModels.Add(newPhoneNumber);
                 }
             }
 
             return newPhoneNumberModels;
+        }
+        private IList<EMail> GetNewEMails(IList<Contact> contactModels)
+        {
+            List<EMail> newEMails = new List<EMail>();
+
+            foreach (var item in contactModels)
+            {
+                var newItems = (item.EMails.Where(m => m.ID == 0).ToList());
+                foreach (var newEmail in newItems)
+                {
+                    newEMails.Add(newEmail);
+                }
+            }
+
+            return newEMails;
         }
     }
         #endregion
