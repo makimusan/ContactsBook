@@ -71,8 +71,7 @@ namespace ViewModels.Implementations
             _serviceDTO = GetService();
             _serviceLocator = new ServiceLocator();
 
-            Contacts = new ObservableCollection<ContactModel>(_serviceDTO.GetContacts());
-            InitContacts();
+            UpdateContacts();
 
             SaveCommand = new UICommand(obj => Save(), cex => CanSave());
             CreateContactCommand = new UICommand(obj => ShowCreateContactWindow());
@@ -84,11 +83,23 @@ namespace ViewModels.Implementations
         private void Save()
         {
             _serviceDTO.SaveContacts(Contacts.Where(c => c.WasModelChanged).ToList());
+
+            UpdateContacts();
         }
 
         private bool CanSave()
         {
             return Contacts.Any(c => c.WasModelChanged);
+        }
+
+        /// <summary>
+        /// Обновляет список контактов
+        /// </summary>
+        private void UpdateContacts()
+        {
+            Contacts.Clear();
+            Contacts = new ObservableCollection<ContactModel>(_serviceDTO.GetContacts());
+            InitContacts();
         }
 
         private bool HasSelectedContact()

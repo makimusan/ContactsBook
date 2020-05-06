@@ -20,7 +20,6 @@ namespace Infrastructure.Factories
         /// <param name="contacts"></param>
         /// <returns></returns>
         IList<ContactModel> CreateContacts(IList<Contact> contacts);
-
         /// <summary>
         /// Возвращает список сущностей контактов для БД
         /// </summary>
@@ -34,7 +33,6 @@ namespace Infrastructure.Factories
         /// <param name="contact"></param>
         /// <returns></returns>
         ContactModel CreateContact(Contact contact);
-
         /// <summary>
         /// Возвращает <see cref="Contact"/> для БД
         /// </summary>
@@ -48,14 +46,12 @@ namespace Infrastructure.Factories
         /// <param name="contactMails"></param>
         /// <returns></returns>
         IList<MailModel> CreateContactMails(IList<EMail> contactMails);
-
         /// <summary>
         /// Возвращает список сущностей <see cref="EMail"/> контактов для БД
         /// </summary>
         /// <param name="contactMails"></param>
         /// <returns></returns>
-        IList<EMail> CreateContactMails(IList<MailModel> contactMails, int contactID, Contact contact);
-        IList<EMail> CreateContactMails(IList<MailModel> contactMails);
+        IList<EMail> CreateContactMails(IList<MailModel> contactMails, Contact contact = null);
 
         /// <summary>
         /// Возвращает <see cref="MailModel"/> контакта
@@ -63,14 +59,12 @@ namespace Infrastructure.Factories
         /// <param name="contacts"></param>
         /// <returns></returns>
         MailModel CreateEMail(EMail contactEMail);
-
         /// <summary>
         /// Возвращает <see cref="EMail"/> контакта для БД
         /// </summary>
         /// <param name="contacts"></param>
         /// <returns></returns>
-        EMail CreateEMail(MailModel contactEMail, int contactID, Contact contact);
-        EMail CreateEMail(MailModel contactEMail);
+        EMail CreateEMail(MailModel contactEMail, Contact contact = null);
 
         /// <summary>
         /// Возвращает список сущностей <see cref="PhoneNumberModel"/> контактов
@@ -78,13 +72,12 @@ namespace Infrastructure.Factories
         /// <param name="contactPhoneNumbers"></param>
         /// <returns></returns>
         IList<PhoneNumberModel> CreateContactPhoneNumbers(IList<PhoneNumber> contactPhoneNumbers);
-
         /// <summary>
         /// Возвращает список сущностей <see cref="PhoneNumber"/> контактов для БД
         /// </summary>
         /// <param name="contactPhoneNumbers"></param>
         /// <returns></returns>
-        IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers, int contactID, Contact contact);
+        IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers, Contact contact = null);
 
         /// <summary>
         /// Возвращает <see cref="PhoneNumberModel"/> контакта
@@ -92,13 +85,12 @@ namespace Infrastructure.Factories
         /// <param name="contactPhoneNumber"></param>
         /// <returns></returns>
         PhoneNumberModel CreatePhoneNumber(PhoneNumber contactPhoneNumber);
-
         /// <summary>
         /// Возвращает <see cref="PhoneNumber"/> контакта для БД
         /// </summary>
         /// <param name="contactPhoneNumber"></param>
         /// <returns></returns>
-        PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber, int contactID, Contact contact);
+        PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber, Contact contact = null);
 
         #endregion
     }

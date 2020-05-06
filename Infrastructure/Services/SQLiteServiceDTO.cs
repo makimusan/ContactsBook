@@ -51,26 +51,43 @@ namespace Infrastructure.Services
             if (contactModels.Count == 0) return;
             _repository.CreateContacts(_factory.CreateContacts(contactModels));
         }
-
         public void UpdateContacts(IList<ContactModel> contactModels)
         {
             if (contactModels.Count == 0) return;
 
             IList<MailModel> delEMailModels = GetDeletedEMails(contactModels);
-
             if(delEMailModels.Count > 0)
             {
+                DeleteEMails(delEMailModels);
                 foreach (var item in contactModels)
                 {
                     item.MailsOfContact = item.MailsOfContact.Except(delEMailModels).ToList();
                 }
-                DeleteEMails(delEMailModels);
-
             }
 
-            _repository.UpdateContacts(_factory.CreateContacts(contactModels));
-        }
+            IList<PhoneNumberModel> delPhoneNumberModels = GetDeletedPhoneNumbers(contactModels);
+            if (delPhoneNumberModels.Count > 0)
+            {
+                DeletePhoneNumbers(delPhoneNumberModels);
+                foreach (var item in contactModels)
+                {
+                    item.PhoneNumbers = item.PhoneNumbers.Except(delPhoneNumberModels).ToList();
+                }
+            }
 
+            var contacts = _factory.CreateContacts(contactModels);
+            IList<PhoneNumber> newPhoneNumbers = GetNewPhoneNumbers(contacts);
+            if (newPhoneNumbers.Count > 0)
+            {
+                _repository.CreatePhoneNumbers(newPhoneNumbers);
+                foreach (var item in contacts)
+                {
+                    item.PhoneNumbers = item.PhoneNumbers.Except(newPhoneNumbers).ToList();
+                }
+            }
+            
+            _repository.UpdateContacts(contacts);
+        }
         public void DeleteContacts(IList<ContactModel> contactModels)
         {
             if (contactModels.Count == 0) return;
@@ -81,6 +98,11 @@ namespace Infrastructure.Services
         {
             _repository.DeleteEMails(_factory.CreateContactMails(eMails));
         }
+        
+        public void DeletePhoneNumbers(IList<PhoneNumberModel> phoneNumbers)
+        {
+            _repository.DeletePhoneNumbers(_factory.CreateContactPhoneNumbers(phoneNumbers));
+        }
 
         #endregion
 
@@ -88,6 +110,11 @@ namespace Infrastructure.Services
 
         #region Методы
 
+        /// <summary>
+        /// Возвращает список @ адресов помеченных на удаление
+        /// </summary>
+        /// <param name="contactModels"></param>
+        /// <returns></returns>
         private IList<MailModel> GetDeletedEMails(IList<ContactModel> contactModels)
         {
             List<MailModel> delEMailModels = new List<MailModel>();
@@ -104,6 +131,42 @@ namespace Infrastructure.Services
             return delEMailModels;
         }
 
-        #endregion
+        /// <summary>
+        /// Возвращает список телефонных номеров помеченных на удаление
+        /// </summary>
+        /// <param name="contactModels"></param>
+        /// <returns></returns>
+        private IList<PhoneNumberModel> GetDeletedPhoneNumbers(IList<ContactModel> contactModels)
+        {
+            List<PhoneNumberModel> delPhoneNumberModels = new List<PhoneNumberModel>();
+
+            foreach (var item in contactModels)
+            {
+                var delItems = (item.PhoneNumbers.Where(m => m.IsDeleted).ToList());
+                foreach (var delPhoneNumber in delItems)
+                {
+                    delPhoneNumberModels.Add(delPhoneNumber);
+                }
+            }
+
+            return delPhoneNumberModels;
+        }
+
+        private IList<PhoneNumber> GetNewPhoneNumbers(IList<Contact> contactModels)
+        {
+            List<PhoneNumber> newPhoneNumberModels = new List<PhoneNumber>();
+
+            foreach (var item in contactModels)
+            {
+                var newItems = (item.PhoneNumbers.Where(m => m.ID == 0).ToList());
+                foreach (var delPhoneNumber in newItems)
+                {
+                    newPhoneNumberModels.Add(delPhoneNumber);
+                }
+            }
+
+            return newPhoneNumberModels;
+        }
     }
+        #endregion
 }

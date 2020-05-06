@@ -24,6 +24,33 @@ namespace Infrastructure.Services
         /// </summary>
         /// <param name="contactModels"></param>
         void SaveContacts(IList<ContactModel> contactModels);
+        /// <summary>
+        /// Добавляет контакты в БД
+        /// </summary>
+        /// <param name="contactModels"></param>
+        void CreateContacts(IList<ContactModel> contactModels);
+        /// <summary>
+        /// Обновляет контакты в БД
+        /// </summary>
+        /// <param name="contactModels"></param>
+        void UpdateContacts(IList<ContactModel> contactModels);
+        /// <summary>
+        /// Удаляет контакты из БД
+        /// </summary>
+        /// <param name="contactModels"></param>
+        void DeleteContacts(IList<ContactModel> contactModels);
+
+        /// <summary>
+        /// Удаляет @ адреса из БД
+        /// </summary>
+        /// <param name="eMails"></param>
+        void DeleteEMails(IList<MailModel> eMails);
+
+        /// <summary>
+        /// Удаляет телефонные номера из БД
+        /// </summary>
+        /// <param name="phoneNumbers"></param>
+        void DeletePhoneNumbers(IList<PhoneNumberModel> phoneNumbers);
         #endregion
     }
 }

@@ -28,7 +28,6 @@ namespace Infrastructure.Factories
 
             return contactsModels;
         }
-
         public IList<Contact> CreateContacts(IList<ContactModel> contacts)
         {
             List<Contact> entContacts = new List<Contact>();
@@ -51,14 +50,13 @@ namespace Infrastructure.Factories
 
             return contactModel;
         }
-
         public Contact CreateContact(ContactModel contact)
         {
             Contact entContact = new Contact() { ID = contact.ID, Name = contact.Name, Surname = contact.SurName };
 
-            entContact.PhoneNumbers = CreateContactPhoneNumbers(contact.PhoneNumbers.ToList(), contact.ID, entContact);
+            entContact.PhoneNumbers = CreateContactPhoneNumbers(contact.PhoneNumbers.ToList(), entContact);
 
-            entContact.EMails = CreateContactMails(contact.MailsOfContact.ToList(), contact.ID, entContact);
+            entContact.EMails = CreateContactMails(contact.MailsOfContact.ToList(), entContact);
 
             return entContact;
         }
@@ -72,26 +70,24 @@ namespace Infrastructure.Factories
             }
             return eMailModels;
         }
-
-        public IList<EMail> CreateContactMails(IList<MailModel> contactMails, int contactID, Contact contact)
+        public IList<EMail> CreateContactMails(IList<MailModel> contactMails, Contact contact = null)
         {
             List<EMail> eMailModels = new List<EMail>();
             foreach (var item in contactMails)
             {
-                eMailModels.Add(CreateEMail(item, contactID, contact));
+                eMailModels.Add(CreateEMail(item, contact));
             }
             return eMailModels;
         }
-
-        public IList<EMail> CreateContactMails(IList<MailModel> contactMails)
-        {
-            List<EMail> eMailModels = new List<EMail>();
-            foreach (var item in contactMails)
-            {
-                eMailModels.Add(CreateEMail(item));
-            }
-            return eMailModels;
-        }
+        //public IList<EMail> CreateContactMails(IList<MailModel> contactMails)
+        //{
+        //    List<EMail> eMailModels = new List<EMail>();
+        //    foreach (var item in contactMails)
+        //    {
+        //        eMailModels.Add(CreateEMail(item));
+        //    }
+        //    return eMailModels;
+        //}
 
         public IList<PhoneNumberModel> CreateContactPhoneNumbers(IList<PhoneNumber> contactPhoneNumbers)
         {
@@ -102,13 +98,12 @@ namespace Infrastructure.Factories
             }
             return phoneNumberModels;
         }
-
-        public IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers, int contactID, Contact contact)
+        public IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers, Contact contact)
         {
             List<PhoneNumber> phoneNumberModels = new List<PhoneNumber>();
             foreach (var item in contactPhoneNumbers)
             {
-                phoneNumberModels.Add(CreatePhoneNumber(item, contactID, contact));
+                phoneNumberModels.Add(CreatePhoneNumber(item, contact));
             }
             return phoneNumberModels;
         }
@@ -117,25 +112,32 @@ namespace Infrastructure.Factories
         {
             return new MailModel() { ID = (int)contactEMail.ID, MailOfContact = contactEMail.EMailAddress };
         }
-
-        public EMail CreateEMail(MailModel contactEMail, int contactID, Contact contact)
+        public EMail CreateEMail(MailModel contactEMail, Contact contact = null)
         {
-            return new EMail() { ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact, ContactID = contactID, Contact = contact };
+            return new EMail()
+            { 
+                ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact, ContactID = contact != null ? contact.ID : 0, Contact = contact 
+            };
         }
 
-        public EMail CreateEMail(MailModel contactEMail)
-        {
-            return new EMail() { ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact };
-        }
+        //public EMail CreateEMail(MailModel contactEMail)
+        //{
+        //    return new EMail() { ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact };
+        //}
 
         public PhoneNumberModel CreatePhoneNumber(PhoneNumber contactPhoneNumber)
         {
             return new PhoneNumberModel() { ID = (int)contactPhoneNumber.ID, PhoneNumber = contactPhoneNumber.Number };
         }
-
-        public PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber, int contactID, Contact contact)
+        public PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber, Contact contact)
         {
-            return new PhoneNumber() { ID = contactPhoneNumber.ID, Number = contactPhoneNumber.PhoneNumber, ContactID = contactID, Contact = contact };
+            return new PhoneNumber() 
+            { 
+                ID = contactPhoneNumber.ID, 
+                Number = contactPhoneNumber.PhoneNumber, 
+                ContactID = contact != null ? contact.ID : 0, 
+                Contact = contact//contactPhoneNumber.ID > 0 ? contact : null
+            };
         }
         #endregion
 
