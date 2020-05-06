@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using ContactsBook.Design.Interfaces;
+using ContactsBook.Helpers.Interfaces;
 
 namespace ContactsBook.Design.Views
 {
     /// <summary>
     /// Логика взаимодействия для ContactsView.xaml
     /// </summary>
-    public partial class ContactsView : Window, IView
+    public partial class ContactsView : Window, IView, IClosable
     {
         public ContactsView()
         {

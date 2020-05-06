@@ -54,6 +54,10 @@
       <Project>{c93b5f62-c860-47b2-8cdc-03b54be76815}</Project>
       <Name>ContactsBook.Design</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ContactsBook.Helpers\ContactsBook.Helpers.csproj">
+      <Project>{BFDCC687-6173-4AF2-936B-06DA793B6486}</Project>
+      <Name>ContactsBook.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

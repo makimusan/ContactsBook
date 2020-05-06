@@ -13,6 +13,8 @@ using ContactsBook.Locator.Services;
 using ViewModels.Manager;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using ContactsBook.Helpers.Interfaces;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace ViewModels.Implementations
 {
@@ -119,12 +121,13 @@ namespace ViewModels.Implementations
         {
             if (HasChanges())
             {
-                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!/nВы уверены?") == true) 
+                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!\nВы уверены?") == true) 
                 {
                     e.Cancel = false;
                     return;
                 }
                 e.Cancel = true;
+                return;
             }
             e.Cancel = false;
 
@@ -145,11 +148,6 @@ namespace ViewModels.Implementations
         }
 
         public ICommand DeleteContactCommand
-        {
-            get; private set;
-        }
-
-        public ICommand CloseWindowCommand
         {
             get; private set;
         }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using ContactsBook.Design.Dialogs;
 using ContactsBook.Design.Interfaces;
 using ContactsBook.Design.Views;
@@ -22,7 +17,7 @@ namespace ContactsBook.Locator.Services
 
         public bool? ActivateContactWindowDialog<T>(T dataContext)
         {
-            IView view = BaseDialogWindow.GetWindowDialog(new ContactsBook.Design.UserControls.ContactPopupView());
+            IView view = new ContactPopupView();
             view.DataContext = dataContext;
             view.Owner = Application.Current.MainWindow;
             

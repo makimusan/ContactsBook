@@ -12,6 +12,8 @@ using ContactsBook.Helpers.Validation;
 using ContactsBook.Locator.Services;
 using System;
 using System.Collections.Specialized;
+using ContactsBook.Helpers.Interfaces;
+using GalaSoft.MvvmLight.CommandWpf;
 
 namespace ViewModels.Implementations
 {
@@ -156,9 +158,8 @@ namespace ViewModels.Implementations
             _serviceDTO = GetService();
             _cloneService = new ContactCloneService();
             _serviceLocator = new ServiceLocator();
-
-            SaveCommand = new UICommand(obj => Save(), cex => HasChanges() && !Contact.HasErrors);
-            CloseWindowCommand = new UICommand(obj => CloseWindow());
+            SaveCommand = new RelayCommand<IClosable>(obj => { Save(obj); }, (uu) => HasChanges() && !Contact.HasErrors);
+            CloseWindowCommand = new RelayCommand<IClosable>(this.CloseWindow);
             AddNumberCommand = new UICommand(obj => AddNumber(), cex => CanAddNumber());
             EditNumberCommand = new UICommand(obj => EditNumber(), cex => CanEditNumber());
             DeleteNumberCommand = new UICommand(obj => DelNumber(), cex => CanDelNumber());
@@ -174,23 +175,38 @@ namespace ViewModels.Implementations
         {
             if (HasChanges())
             {
-                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!/nВы уверены?") == true)
+                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!\nВы уверены?") == true)
                 {
-                    PhoneNumbers = null;
-                    EMails = null;
-                    e.Cancel = false;
                     return;
                 }
-                e.Cancel = true;
             }
-            e.Cancel = false;
         }
 
-        private void CloseWindow()
+        private bool isCancel;
+        public bool IsCancel 
         {
-            
+            get { return isCancel; }
+            set
+            {
+                isCancel = value;
+                OnPropertyChanged(nameof(IsCancel));
+            } 
         }
 
+        private void CloseWindow(IClosable window)
+        {
+            if (HasChanges())
+            {
+                if (_serviceLocator.ShowQuestionDialog("ВНИМАНИЕ!!!", "Имеются несохранённые изменения! При выходе все данные будут потеряны!\nВы уверены?") == true)
+                {
+                    if (window != null) window.Close();
+                    return;
+                }
+                return;
+            }
+            if (window != null)
+                window.Close();
+        }
         /// <summary>
         /// Возвращает глубоко клонированную модель <see cref="ContactModel"/>
         /// </summary>
@@ -213,9 +229,14 @@ namespace ViewModels.Implementations
             return _cloneService.CloneObject(Contact);
         }
 
-        private void Save()
+        private void Save(IClosable window)
         {
-
+            if (window != null)
+            {
+                window.DialogResult = true;
+                window.Close();
+            }
+                
         }
 
         private bool HasChanges()
@@ -325,46 +346,37 @@ namespace ViewModels.Implementations
             foreach (var item in PhoneNumbers)
             {
                 item.WasModelChanged = false;
+                item.PropertyChanged += OnModelPropertyChanged;
             }
             foreach (var item in EMails)
             {
                 item.WasModelChanged = false;
+                item.PropertyChanged += OnModelPropertyChanged;
             }
             PhoneNumbers.CollectionChanged += OnCollectionCanged;
-            //EMails.CollectionChanged += OnCollectionCanged;
+            EMails.CollectionChanged += OnCollectionCanged;
         }
 
         private void OnCollectionCanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.OldItems != null)
-            {
-                foreach (INotifyPropertyChanged item in e.OldItems)
-                    item.PropertyChanged -= ModelPropertyChanged;
-            }
-            if (e.NewItems != null)
-            {
-                foreach (INotifyPropertyChanged item in e.NewItems)
-                    item.PropertyChanged += ModelPropertyChanged;
-            }
-            
+            Contact.WasModelChanged = true;
         }
 
-        private void ModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             Contact.WasModelChanged = true;
-            //RaisePropertyChanged(e.PropertyName);
         }
 
         #endregion
 
         #region Команды
 
-        public ICommand CloseWindowCommand
+        public RelayCommand<IClosable> CloseWindowCommand
         {
             get; private set;
         }
 
-        public ICommand SaveCommand
+        public RelayCommand<IClosable> SaveCommand
         {
             get; private set;
         }

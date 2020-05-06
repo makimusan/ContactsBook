@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Infrastructure.Managers;
 using Infrastructure.Services;
+using ContactsBook.Helpers.Interfaces;
 
 namespace ViewModels.Base
 {
@@ -20,6 +21,7 @@ namespace ViewModels.Base
         public ViewModelBase()
         {
             _serviceDTO = MenagerServices.GetCurrentService();
+
         }
         #endregion
 

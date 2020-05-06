@@ -56,9 +56,6 @@
     <Compile Include="Dialogs\BaseDialog.xaml.cs">
       <DependentUpon>BaseDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\BaseDialogWindow.xaml.cs">
-      <DependentUpon>BaseDialogWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -73,7 +70,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Interfaces\IView.cs" />
-    <Compile Include="UserControls\ContactPopupView.xaml.cs">
+    <Compile Include="Views\ContactPopupView.xaml.cs">
       <DependentUpon>ContactPopupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ContactsView.xaml.cs">
@@ -94,11 +91,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\BaseDialogWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UserControls\ContactPopupView.xaml">
+    <Page Include="Views\ContactPopupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -107,6 +100,11 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsBook.Helpers\ContactsBook.Helpers.csproj">
+      <Project>{bfdcc687-6173-4af2-936b-06da793b6486}</Project>
+      <Name>ContactsBook.Helpers</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

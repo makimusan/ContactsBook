@@ -74,11 +74,11 @@
 
         <!--Поиск-->
         <TextBlock Grid.Column="1" 
-                   Text="Поиск контакта" 
+                   Text="Поиск по имени" 
                    Margin="0 10"
                    VerticalAlignment="Top" HorizontalAlignment="Center"/>
         <TextBox Grid.Column="1" 
-                 Width="100" 
+                 Width="120" 
                  VerticalAlignment="Top" HorizontalAlignment="Center"
                  Margin="0 30"
                  ToolTip="Поиск контактов"/>
@@ -86,7 +86,7 @@
         <!--Панель управления-->
         <StackPanel Grid.Column="1"
                     VerticalAlignment="Bottom"
-                    Margin="10 40">
+                    Margin="10 80">
             <Button Content="Добавить" 
                     Command="{Binding Path=CreateContactCommand}"
                     Margin="0 6" Height="30"/>
@@ -102,6 +102,6 @@
                 VerticalAlignment="Bottom"
                 Grid.Column="1"
                 Command="{Binding Path=SaveCommand}"
-                Margin="10 6" Height="30"/>
+                Margin="10 10" Height="30"/>
     </Grid>
 </Window>
