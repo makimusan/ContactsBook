@@ -60,10 +60,13 @@
                              Validation.ErrorTemplate="{StaticResource WarningValidationTemplate}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Command="{Binding Path=AddNumberCommand}"
+                                FontFamily="{StaticResource FontSegoe}"
                                 Style="{StaticResource Style_Button_EditViewAdd}"/>
                         <Button Command="{Binding Path=EditNumberCommand}"
+                                FontFamily="{StaticResource FontSegoe}"
                                 Style="{StaticResource Style_Button_EditViewEdit}"/>
                         <Button Command="{Binding Path=DeleteNumberCommand}"
+                                FontFamily="{StaticResource FontSegoe}"
                                 Style="{StaticResource Style_Button_EditViewDel}"/>
                     </StackPanel>
 
@@ -74,10 +77,13 @@
                              Validation.ErrorTemplate="{StaticResource WarningValidationTemplate}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Command="{Binding Path=AddEMailCommand}"
+                                FontFamily="{StaticResource FontSegoe}"
                                 Style="{StaticResource Style_Button_EditViewAdd}"/>
                         <Button Command="{Binding Path=EditEMailCommand}"
+                                FontFamily="{StaticResource FontSegoe}"
                                 Style="{StaticResource Style_Button_EditViewEdit}"/>
                         <Button Command="{Binding Path=DeleteEMailCommand}"
+                                FontFamily="{StaticResource FontSegoe}"
                                 Style="{StaticResource Style_Button_EditViewDel}"/>
                     </StackPanel>
                 </StackPanel>

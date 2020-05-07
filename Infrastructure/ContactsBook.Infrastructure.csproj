@@ -48,7 +48,6 @@
     <Compile Include="Commands\UICommand.cs" />
     <Compile Include="Factories\IFactory.cs" />
     <Compile Include="Factories\SQLiteFactory.cs" />
-    <Compile Include="Managers\DialogManager.cs" />
     <Compile Include="Managers\MenagerServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AbstactCloneService.cs" />
