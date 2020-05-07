@@ -50,7 +50,8 @@
                                     <ComboBox ItemsSource="{Binding Path=PhoneNumbers}"
                                               DisplayMemberPath="PhoneNumber"
                                               SelectedIndex="0"
-                                              Foreground="Blue" Cursor="Hand"/>
+                                              Foreground="Blue" Cursor="Hand"
+                                              ItemTemplate="{StaticResource DTemplate_ComboBox_PhoneNumber}"/>
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -62,9 +63,9 @@
                                     <ComboBox ItemsSource="{Binding Path=MailsOfContact}"
                                               DisplayMemberPath="MailOfContact"
                                               SelectedIndex="0"
-                                              Foreground="Blue" Cursor="Hand" />
+                                              Foreground="Blue" Cursor="Hand" 
+                                              ItemTemplate="{StaticResource DTemplate_ComboBox_EMail}"/>
                                 </Grid>
-
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

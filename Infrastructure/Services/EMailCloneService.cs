@@ -24,7 +24,8 @@ namespace Infrastructure.Services
             return new MailModel()
             {
                 ID = clonableObject.ID,
-                MailOfContact = clonableObject.MailOfContact
+                MailOfContact = clonableObject.MailOfContact,
+                IsDeleted = clonableObject.IsDeleted
             };
         }
     }

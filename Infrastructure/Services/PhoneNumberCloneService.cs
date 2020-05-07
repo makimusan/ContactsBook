@@ -24,7 +24,8 @@ namespace Infrastructure.Services
             return new PhoneNumberModel()
             {
                 ID = clonableObject.ID,
-                PhoneNumber = clonableObject.PhoneNumber
+                PhoneNumber = clonableObject.PhoneNumber,
+                IsDeleted = clonableObject.IsDeleted
             };
         }
     }
