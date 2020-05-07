@@ -97,13 +97,13 @@
                     Margin="10 80">
             <Button Content="Добавить" 
                     Command="{Binding Path=CreateContactCommand}"
-                    Margin="0 6" Height="30"/>
+                    Style="{StaticResource Style_Button_CRUD}"/>
             <Button Content="Редактировать" 
                     Command="{Binding Path=EditContactCommand}"
-                    Margin="0 6" Height="30"/>
+                    Style="{StaticResource Style_Button_CRUD}"/>
             <Button Content="Удалить"
                     Command="{Binding Path=DeleteContactCommand}"
-                    Margin="0 6" Height="30"/>
+                    Style="{StaticResource Style_Button_CRUD}"/>
         </StackPanel>
 
         <Button Content="Сохранить изменения"
