@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
         <!--Список контактов-->
         <ListView Grid.Column="0" 
-                  ItemsSource ="{Binding Path=Contacts}"
+                  ItemsSource ="{Binding Path=ContactCollection}"
                   SelectedItem="{Binding Path=Contact}"
                   SelectionMode="Single"
                   Margin="10">
@@ -73,15 +73,22 @@
         </ListView>
 
         <!--Поиск-->
-        <TextBlock Grid.Column="1" 
-                   Text="Поиск по имени" 
-                   Margin="0 10"
-                   VerticalAlignment="Top" HorizontalAlignment="Center"/>
-        <TextBox Grid.Column="1" 
-                 Width="120" 
-                 VerticalAlignment="Top" HorizontalAlignment="Center"
-                 Margin="0 30"
-                 ToolTip="Поиск контактов"/>
+        <StackPanel Grid.Column="1" Orientation="Vertical"
+                    VerticalAlignment="Top" Margin="10">
+            <TextBlock Text="Поиск по имени" 
+                       VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <TextBox Text="{Binding Path=SearchByNameString, UpdateSourceTrigger=PropertyChanged}"
+                     Width="120" Margin="0 6 0 20"
+                     VerticalAlignment="Top" HorizontalAlignment="Left"
+                     ToolTip="Поиск контактов"/>
+            <TextBlock Text="Поиск по фамилии" 
+                       VerticalAlignment="Top" HorizontalAlignment="Left"/>
+            <TextBox Text="{Binding Path=SearchBySurNameString, UpdateSourceTrigger=PropertyChanged}"
+                     Width="120" Margin="0 6 0 20"
+                     VerticalAlignment="Top" HorizontalAlignment="Left"
+                     ToolTip="Поиск контактов"/>
+        </StackPanel>
+        
 
         <!--Панель управления-->
         <StackPanel Grid.Column="1"

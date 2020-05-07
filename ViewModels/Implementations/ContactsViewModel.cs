@@ -13,8 +13,7 @@ using ContactsBook.Locator.Services;
 using ViewModels.Manager;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-using ContactsBook.Helpers.Interfaces;
-using GalaSoft.MvvmLight.CommandWpf;
+using System.Windows.Data;
 
 namespace ViewModels.Implementations
 {
@@ -35,6 +34,18 @@ namespace ViewModels.Implementations
         #region Реализация IContactsViewModel
 
         #region Свойства
+
+        private ICollectionView contactCollection;
+        public ICollectionView ContactCollection 
+        { 
+            get { return contactCollection; } 
+            private set 
+            { 
+                contactCollection = value; 
+                OnPropertyChanged(nameof(ContactCollection)); 
+            } 
+        }
+
         private ObservableCollection<ContactModel> contacts;
         public ObservableCollection<ContactModel> Contacts 
         {
@@ -63,9 +74,40 @@ namespace ViewModels.Implementations
             }
         }
 
-
         public override string ViewTitle => "Справочник контактов";
 
+        private string searchByNameString;
+
+        public string SearchByNameString
+        {
+            get { return searchByNameString; }
+            set 
+            { 
+                if(searchByNameString != value)
+                {
+                    searchByNameString = value;
+                    OnPropertyChanged(nameof(SearchByNameString));
+                    RefreshCollectionView();
+                }
+            }
+        }
+        
+
+        private string searchBySurNameString;
+
+        public string SearchBySurNameString
+        {
+            get { return searchBySurNameString; }
+            set 
+            { 
+                if(searchBySurNameString != value)
+                {
+                    searchBySurNameString = value;
+                    OnPropertyChanged(nameof(SearchByNameString));
+                    RefreshCollectionView();
+                }
+            }
+        }
         #endregion
 
         #region Методы
@@ -75,6 +117,7 @@ namespace ViewModels.Implementations
             _serviceLocator = new ServiceLocator();
 
             UpdateContacts();
+            InitCollectionView();
 
             SaveCommand = new UICommand(obj => Save(), cex => HasChanges());
             CreateContactCommand = new UICommand(obj => ShowCreateContactWindow());
@@ -87,6 +130,7 @@ namespace ViewModels.Implementations
         {
             _serviceDTO.SaveContacts(Contacts.Where(c => c.WasModelChanged).ToList());
 
+            ContactCollection = null;
             UpdateContacts();
         }
 
@@ -103,6 +147,27 @@ namespace ViewModels.Implementations
             Contacts.Clear();
             Contacts = new ObservableCollection<ContactModel>(_serviceDTO.GetContacts());
             InitContacts();
+            if (ContactCollection != null) RefreshCollectionView();
+            else InitCollectionView();
+        }
+
+        private void InitCollectionView()
+        {
+            // Инициализация ICollectionView
+            BindingOperations.EnableCollectionSynchronization(Contacts, new object());
+            ContactCollection = CollectionViewSource.GetDefaultView(Contacts);
+            // Инициализация фильра ICollectionView
+            ContactCollection.Filter = ContactsFilter;
+
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Name");
+            ContactCollection.GroupDescriptions.Add(groupDescription);
+
+            OnPropertyChanged("ContactCollection");
+        }
+
+        private void RefreshCollectionView()
+        {
+            ContactCollection.Refresh();
         }
 
         private bool HasSelectedContact()
@@ -228,7 +293,6 @@ namespace ViewModels.Implementations
                     if (res != null) return false;
                 }
             }
-
             return true;
         }
 
@@ -241,6 +305,22 @@ namespace ViewModels.Implementations
             {
                 item.WasModelChanged = false;
             }
+        }
+
+        /// <summary>
+        /// Враппер фильтра контактов
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        private bool ContactsFilter(object item)
+        {
+            ContactModel tContact = item as ContactModel;
+
+            if (!string.IsNullOrWhiteSpace(SearchByNameString) && !tContact.Name.Contains(SearchByNameString)) return false;
+            
+            if (!string.IsNullOrWhiteSpace(searchBySurNameString) && !tContact.SurName.Contains(searchBySurNameString)) return false;
+
+            return true;
         }
         #endregion
     }
