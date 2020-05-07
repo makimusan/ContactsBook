@@ -97,19 +97,18 @@
                     Margin="10 80">
             <Button Content="Добавить" 
                     Command="{Binding Path=CreateContactCommand}"
-                    Style="{StaticResource Style_Button_CRUD}"/>
+                    Style="{StaticResource Style_Button_MainViewCRUD}"/>
             <Button Content="Редактировать" 
                     Command="{Binding Path=EditContactCommand}"
-                    Style="{StaticResource Style_Button_CRUD}"/>
+                    Style="{StaticResource Style_Button_MainViewCRUD}"/>
             <Button Content="Удалить"
                     Command="{Binding Path=DeleteContactCommand}"
-                    Style="{StaticResource Style_Button_CRUD}"/>
+                    Style="{StaticResource Style_Button_MainViewCRUD}"/>
         </StackPanel>
 
         <Button Content="Сохранить изменения"
-                VerticalAlignment="Bottom"
                 Grid.Column="1"
                 Command="{Binding Path=SaveCommand}"
-                Margin="10 10" Height="30"/>
+                Style="{StaticResource Style_Button_MainViewSave}"/>
     </Grid>
 </Window>

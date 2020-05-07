@@ -5,4 +5,6 @@
         <ResourceDictionary Source="Controls/Button/ButtonStyles.xaml"/>
         <ResourceDictionary Source="Controls/ComboBox/ComboBoxStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <FontFamily x:Key="FontSegoe">pack://application:,,,/Fonts/#Segoe MDL2 Assets</FontFamily>
 </ResourceDictionary>

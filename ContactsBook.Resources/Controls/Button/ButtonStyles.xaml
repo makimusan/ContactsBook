@@ -7,9 +7,41 @@
         <Setter Property="Width" Value="200"/>
     </Style>
 
-    <Style x:Key="Style_Button_CRUD" TargetType="Button">
+    <Style x:Key="Style_Button_MainViewCRUD" TargetType="Button">
         <Setter Property="Margin" Value="0 6"/>
         <Setter Property="Height" Value="30"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="Style_Button_MainViewSave" TargetType="Button" BasedOn="{StaticResource Style_Button_MainViewCRUD}">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewCRUD" TargetType="Button">
+        <Setter Property="Width" Value="20"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewAdd" TargetType="Button" BasedOn="{StaticResource Style_Button_EditViewCRUD}">
+        <!--<Setter Property="FontFamily" Value="{StaticResource FontSegoe}"/>-->
+        <!--<Setter Property="Content" Value="&#xF571;"/>-->
+        <Setter Property="Content" Value="+"/>
+        <Setter Property="ToolTip" Value="Добавить"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewEdit" TargetType="Button" BasedOn="{StaticResource Style_Button_EditViewCRUD}">
+        <!--<Setter Property="FontFamily" Value="{StaticResource FontSegoe}"/>-->
+        <!--<Setter Property="Content" Value="&#xF571;"/>-->
+        <Setter Property="Content" Value="/"/>
+        <Setter Property="ToolTip" Value="Изменить"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewDel" TargetType="Button" BasedOn="{StaticResource Style_Button_EditViewCRUD}">
+        <!--<Setter Property="FontFamily" Value="{StaticResource FontSegoe}"/>-->
+        <!--<Setter Property="Content" Value="&#xF571;"/>-->
+        <Setter Property="Content" Value="-"/>
+        <Setter Property="ToolTip" Value="Удалить"/>
     </Style>
 
 </ResourceDictionary>
