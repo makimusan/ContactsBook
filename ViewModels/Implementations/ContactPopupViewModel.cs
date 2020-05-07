@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using ContactsBook.Helpers.Validation;
 using ContactsBook.Locator.Services;
-using System;
 using System.Collections.Specialized;
 using ContactsBook.Helpers.Interfaces;
 using GalaSoft.MvvmLight.CommandWpf;

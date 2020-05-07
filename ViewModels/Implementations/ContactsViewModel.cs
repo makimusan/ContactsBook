@@ -1,11 +1,8 @@
 ﻿using ContactsBook.Domain.Models;
 using Infrastructure.Services;
 using Infrastructure.Commands;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using ViewModels.Base;
 using ViewModels.Interfaces;
