@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ContactsBook.Domain.Models;
 using ViewModels.Implementations;
 using ViewModels.Interfaces;
 
@@ -12,12 +8,16 @@ namespace ViewModels.Manager
     {
         public static IContactsViewModel GetContactsViewModel()
         {
-            return new ContactsViewModel();
+            IContactsViewModel contactsViewModel = new ContactsViewModel();
+            contactsViewModel.InitializeViewModel();
+            return contactsViewModel;
         }
 
-        public static IContactPopupViewModel GetContactViewModel()
+        public static IContactPopupViewModel GetContactViewModel(ContactModel contactModel = null)
         {
-            return new ContactPopupViewModel();
+            IContactPopupViewModel contactPopupViewModel = new ContactPopupViewModel();
+            contactPopupViewModel.InitializeViewModel(contactModel);
+            return contactPopupViewModel;
         }
     }
 }

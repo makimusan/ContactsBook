@@ -1,10 +1,7 @@
 ﻿using ContactsBook.Domain.DataStructs;
 using ContactsBook.Domain.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Factories
 {
@@ -28,46 +25,37 @@ namespace Infrastructure.Factories
 
             return contactsModels;
         }
-
         public IList<Contact> CreateContacts(IList<ContactModel> contacts)
         {
-            throw new NotImplementedException();
+            List<Contact> entContacts = new List<Contact>();
+
+            foreach (var item in contacts)
+            {
+                entContacts.Add(CreateContact(item));
+            }
+
+            return entContacts;
         }
 
         public ContactModel CreateContact(Contact contact)
         {
             ContactModel contactModel = new ContactModel() { ID = (int)contact.ID, Name = contact.Name, SurName = contact.Surname };
 
-            contactModel.PhoneNumbers = CreateContactPhoneNumbers(contact.PhoneNumbers.ToList());//contact.PhoneNumbers != null ? CreateContactPhoneNumbers(contact.PhoneNumbers.ToList()) : null;
+            contactModel.PhoneNumbers = CreateContactPhoneNumbers(contact.PhoneNumbers.ToList());
 
-            contactModel.MailsOfContact = CreateContactMails(contact.EMails.ToList());//contact.EMails != null ? CreateContactMails(contact.EMails.ToList()) : null;
+            contactModel.MailsOfContact = CreateContactMails(contact.EMails.ToList());
 
             return contactModel;
         }
-
-        public MailModel CreateContactMail(EMail contactMail)
-        {
-            throw new NotImplementedException();
-        }
-
-        public PhoneNumberModel CreateContactPhoneNumber(PhoneNumber contactPhoneNumber)
-        {
-            throw new NotImplementedException();
-        }
-
         public Contact CreateContact(ContactModel contact)
         {
-            throw new NotImplementedException();
-        }
+            Contact entContact = new Contact() { ID = contact.ID, Name = contact.Name, Surname = contact.SurName };
 
-        public EMail CreateContactMail(MailModel contactMail)
-        {
-            throw new NotImplementedException();
-        }
+            entContact.PhoneNumbers = CreateContactPhoneNumbers(contact.PhoneNumbers.ToList(), entContact);
 
-        public PhoneNumber CreateContactPhoneNumber(PhoneNumberModel contactPhoneNumber)
-        {
-            throw new NotImplementedException();
+            entContact.EMails = CreateContactMails(contact.MailsOfContact.ToList(), entContact);
+
+            return entContact;
         }
 
         public IList<MailModel> CreateContactMails(IList<EMail> contactMails)
@@ -79,6 +67,24 @@ namespace Infrastructure.Factories
             }
             return eMailModels;
         }
+        public IList<EMail> CreateContactMails(IList<MailModel> contactMails, Contact contact = null)
+        {
+            List<EMail> eMailModels = new List<EMail>();
+            foreach (var item in contactMails)
+            {
+                eMailModels.Add(CreateEMail(item, contact));
+            }
+            return eMailModels;
+        }
+        //public IList<EMail> CreateContactMails(IList<MailModel> contactMails)
+        //{
+        //    List<EMail> eMailModels = new List<EMail>();
+        //    foreach (var item in contactMails)
+        //    {
+        //        eMailModels.Add(CreateEMail(item));
+        //    }
+        //    return eMailModels;
+        //}
 
         public IList<PhoneNumberModel> CreateContactPhoneNumbers(IList<PhoneNumber> contactPhoneNumbers)
         {
@@ -89,39 +95,46 @@ namespace Infrastructure.Factories
             }
             return phoneNumberModels;
         }
-
-        public IList<EMail> CreateContactMails(IList<MailModel> contactMails)
+        public IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers, Contact contact)
         {
-            throw new NotImplementedException();
-        }
-
-
-
-        public EMail CreateEMail(MailModel contactEMail)
-        {
-            throw new NotImplementedException();
-        }
-
-
-
-        public IList<PhoneNumber> CreateContactPhoneNumbers(IList<PhoneNumberModel> contactPhoneNumbers)
-        {
-            throw new NotImplementedException();
+            List<PhoneNumber> phoneNumberModels = new List<PhoneNumber>();
+            foreach (var item in contactPhoneNumbers)
+            {
+                phoneNumberModels.Add(CreatePhoneNumber(item, contact));
+            }
+            return phoneNumberModels;
         }
 
         public MailModel CreateEMail(EMail contactEMail)
         {
             return new MailModel() { ID = (int)contactEMail.ID, MailOfContact = contactEMail.EMailAddress };
         }
+        public EMail CreateEMail(MailModel contactEMail, Contact contact = null)
+        {
+            return new EMail()
+            { 
+                ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact, ContactID = contact != null ? contact.ID : 0, Contact = contact 
+            };
+        }
+
+        //public EMail CreateEMail(MailModel contactEMail)
+        //{
+        //    return new EMail() { ID = contactEMail.ID, EMailAddress = contactEMail.MailOfContact };
+        //}
 
         public PhoneNumberModel CreatePhoneNumber(PhoneNumber contactPhoneNumber)
         {
             return new PhoneNumberModel() { ID = (int)contactPhoneNumber.ID, PhoneNumber = contactPhoneNumber.Number };
         }
-
-        public PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber)
+        public PhoneNumber CreatePhoneNumber(PhoneNumberModel contactPhoneNumber, Contact contact)
         {
-            throw new NotImplementedException();
+            return new PhoneNumber() 
+            { 
+                ID = contactPhoneNumber.ID, 
+                Number = contactPhoneNumber.PhoneNumber, 
+                ContactID = contact != null ? contact.ID : 0, 
+                Contact = contact//contactPhoneNumber.ID > 0 ? contact : null
+            };
         }
         #endregion
 

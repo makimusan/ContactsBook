@@ -99,7 +99,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SQLiteModelRepository.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\ContactsBook.Helpers\ContactsBook.Helpers.csproj">
+      <Project>{bfdcc687-6173-4af2-936b-06da793b6486}</Project>
+      <Name>ContactsBook.Helpers</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <EntityDeploy Include="DataStructs\ContactsBook_DB_Model.edmx">

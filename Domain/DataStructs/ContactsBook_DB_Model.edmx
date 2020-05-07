@@ -112,7 +112,9 @@
           <NavigationProperty Name="Contact" Relationship="ContactsBookContext.FK_PhoneNumber_0_0" FromRole="PhoneNumber" ToRole="Contact" />
         </EntityType>
         <Association Name="FK_EMail_0_0">
-          <End Type="ContactsBookContext.Contact" Role="Contact" Multiplicity="1" />
+          <End Type="ContactsBookContext.Contact" Role="Contact" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ContactsBookContext.EMail" Role="EMail" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Contact">
@@ -124,7 +126,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_PhoneNumber_0_0">
-          <End Type="ContactsBookContext.Contact" Role="Contact" Multiplicity="1" />
+          <End Type="ContactsBookContext.Contact" Role="Contact" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Type="ContactsBookContext.PhoneNumber" Role="PhoneNumber" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Contact">

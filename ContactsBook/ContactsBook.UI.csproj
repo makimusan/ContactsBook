@@ -38,6 +38,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ContactsBook.Design\bin\Debug\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -71,23 +75,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\ContactPopupView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ContactsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Views\ContactPopupView.xaml.cs">
-      <DependentUpon>ContactPopupView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ContactsView.xaml.cs">
-      <DependentUpon>ContactsView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -118,6 +107,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ContactsBook.Design\ContactsBook.Design.csproj">
+      <Project>{c93b5f62-c860-47b2-8cdc-03b54be76815}</Project>
+      <Name>ContactsBook.Design</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ContactsBook.Locator\ContactsBook.Locator.csproj">
+      <Project>{811fcd67-ea1c-4f3a-8908-7251ae7b1221}</Project>
+      <Name>ContactsBook.Locator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ContactsBook.Resources\ContactsBook.Resources.csproj">
       <Project>{4f12f2c2-daa3-4f50-9ec8-5357663f939d}</Project>
       <Name>ContactsBook.Resources</Name>

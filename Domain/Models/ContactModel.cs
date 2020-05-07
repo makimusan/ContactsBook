@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ContactsBook.Helpers.Validation;
+using System.Collections.Generic;
 
 namespace ContactsBook.Domain.Models
 {
@@ -21,7 +22,7 @@ namespace ContactsBook.Domain.Models
                 if (value != name)
                 {
                     name = value;
-                    OnPropertyChanged(nameof(Name));
+                    OnDataChanged(nameof(Name));
                 }
             }
         }
@@ -38,7 +39,7 @@ namespace ContactsBook.Domain.Models
                 if (value != surName)
                 {
                     surName = value;
-                    OnPropertyChanged(nameof(SurName));
+                    OnDataChanged(nameof(SurName));
                 }
             }
         }
@@ -62,7 +63,7 @@ namespace ContactsBook.Domain.Models
 
         private IList<MailModel> mailsOfContact;
         /// <summary>
-        /// Список телефонных номеров контакта
+        /// Список электронных адресов контакта
         /// </summary>
         public IList<MailModel> MailsOfContact
         {
@@ -74,6 +75,34 @@ namespace ContactsBook.Domain.Models
                     mailsOfContact = value;
                     OnPropertyChanged(nameof(MailsOfContact));
                 }
+            }
+        }
+
+        #endregion
+
+        #region Валидация IDataErrorInfo
+
+        public override string this[string propName] 
+        {
+            get
+            {
+                string result = null;
+
+                switch (propName)
+                {
+                    case "Name":
+                        ClearErrors(propName);
+                        if (!ValidationManager.ContainsOnlyLetters(Name)) result = "Имя должно содержать только буквы"; 
+                        break;
+                    case "SurName":
+                        ClearErrors(propName);
+                        if(!ValidationManager.ContainsOnlyLetters(SurName)) result = "Фамилия должна содержать только буквы"; 
+                        break;
+                }
+
+                AddErrorToCollection(propName, result);
+
+                return result;
             }
         }
 

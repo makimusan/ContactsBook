@@ -1,0 +1,44 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ContactsBook.Resources.Controls.Button">
+    
+    <Style x:Key="Style_Button_Default" TargetType="Button">
+        <Setter Property="Background" Value="Red"/>
+        <Setter Property="Width" Value="200"/>
+    </Style>
+
+    <Style x:Key="Style_Button_MainViewCRUD" TargetType="Button">
+        <Setter Property="Margin" Value="0 6"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="Style_Button_MainViewSave" TargetType="Button" BasedOn="{StaticResource Style_Button_MainViewCRUD}">
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="VerticalAlignment" Value="Bottom"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewCRUD" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource FontSegoe}"/>
+        <Setter Property="Height" Value="22"/>
+        <Setter Property="Width" Value="22"/>
+        <Setter Property="Margin" Value="2 2 0 2"/>
+        <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewAdd" TargetType="Button" BasedOn="{StaticResource Style_Button_EditViewCRUD}">
+        <Setter Property="Content" Value="&#xE109;"/>
+        <Setter Property="ToolTip" Value="Добавить"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewEdit" TargetType="Button" BasedOn="{StaticResource Style_Button_EditViewCRUD}">
+        <Setter Property="Content" Value="&#xE1C2;"/>
+        <Setter Property="ToolTip" Value="Изменить"/>
+    </Style>
+
+    <Style x:Key="Style_Button_EditViewDel" TargetType="Button" BasedOn="{StaticResource Style_Button_EditViewCRUD}">
+        <Setter Property="Content" Value="&#xE74D;"/>
+        <Setter Property="ToolTip" Value="Удалить"/>
+    </Style>
+
+</ResourceDictionary>
